@@ -9,6 +9,7 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 	void Game::Init()
 	{
+		
 		/*
 		LoadLevel();
 		PlayerInit();
@@ -22,6 +23,12 @@ namespace Tmpl8
 	void Game::Shutdown()
 	{
 		screen->Clear(0);
+	}
+
+	void Game::Tick(float deltaTime)
+	{
+		Update();
+		Render();
 	}
 
 	void Game::Update() 
