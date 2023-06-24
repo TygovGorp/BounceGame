@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <iostream>
 #include <string> 
+#include <math.h>  
 
 namespace Tmpl8 {
 
@@ -18,13 +19,14 @@ public:
 	void CheckScreenBounds();
 	void MouseUp( int button ) { /* implement if you want to detect mouse button presses */ }
 	void MouseDown( int button ) { /* implement if you want to detect mouse button presses */ }
-	void MouseMove(int x, int y) 
+	void MouseMove(float x, float y) 
 	{
 		MouseX = x;
-		MouseY = y - 512;
-		MouseY = abs(MouseY);
-		std::cout << MouseX << "," << MouseY << std::endl;
+		MouseY = y;
 	}
+
+	void DrawLineToMouse();
+
 	void KeyUp( int key ) { /* implement if you want to handle keys */ }
 	void KeyDown(int key) 
 	{
@@ -51,11 +53,11 @@ public:
 		}
 	}
 
+	void IdleAnimation();
 
 	static SDL_Renderer* renderer;
-	static const int ScreenSize = 768;
-	int MouseX;
-	int MouseY;
+	float MouseX;
+	float MouseY;
 private:
 	Surface* screen;
 };
