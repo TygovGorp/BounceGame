@@ -27,14 +27,36 @@ namespace Tmpl8
 		screen->Clear(0);
 	}
 
-
+	Sprite bullet(new Surface("assets/magic_missile.png"), 1);
 
 	void Game::Tick(float deltaTime)
 	{
-		
 		screen->Clear(0);
+
+		
+		if (bulletFired) {
+			std::cout << "pang" << std::endl;
+			bulletX += bulletDX;
+			bulletY += bulletDY;
+
+			// Check if the bullet is out of bounds
+			if (bulletX < 0 || bulletX >= SCREEN_WIDTH || bulletY < 0 || bulletY >= SCREEN_HEIGHT) {
+				std::cout << "out" << std::endl;
+				bulletX = SCREEN_WIDTH / 2;
+				bulletY = SCREEN_HEIGHT / 2;
+				bulletFired = false;
+			}
+		}
+
+		// Draw bullet
+		if (bulletFired) {
+			std::cout << "draw" << std::endl;
+			std::cout << bulletX  << "," << bulletY << std::endl;
+			bullet.Draw(screen, bulletX, bulletY);
+		}
+
+		
 		IdleAnimation();
-		DrawLineToMouse();
 		Update();
 		Render();
 	}
@@ -61,45 +83,7 @@ namespace Tmpl8
 		*/
 	}
 
-	void Game::CheckScreenBounds()
-	{
-		// Add logic to check and handle boundaries
-	}
-
-	void Game::DrawLineToMouse()
-	{
-		// Calculate the line slope
-		float slope = static_cast<float>(MouseY) / static_cast<float>(MouseX);
-
-		// Determine the direction of the line
-		int xStep = (MouseX > 0) ? 1 : -1;
-		int yStep = (MouseY > 0) ? 1 : -1;
-
-		// Starting coordinates
-		int x = 0;
-		int y = 0;
-
-		// Plotting loop
-		while (x != MouseX && y != MouseY)
-		{
-			// Plot the current point
-			screen->Plot(x, y, 0xff0000);
-
-			// Move to the next point
-			if (std::abs(slope) <= 1)
-				x += xStep;
-			else
-				y += yStep;
-
-			// Calculate the corresponding y-coordinate based on the slope
-			if (std::abs(slope) <= 1)
-				y = static_cast<int>(slope * x);
-			else
-				x = static_cast<int>(y / slope);
-		}
-	}
-
-
+	
 	//animation
 	Sprite Idle_frame_1(new Surface("assets/Wizard-Frames/Idle_frame_1.png"), 1);
 	Sprite Idle_frame_2(new Surface("assets/Wizard-Frames/Idle_frame_2.png"), 1);
@@ -116,8 +100,7 @@ namespace Tmpl8
 
 	void Game::IdleAnimation()
 	{
-
-		std::cout << counter << std::endl;
+		/*
 		if (counter >= 0)
 		{
 			screen->Clear(0);
@@ -163,5 +146,6 @@ namespace Tmpl8
 			counter = 0;
 		}
 		counter++;
+		*/
 	}
 };
