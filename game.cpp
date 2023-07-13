@@ -27,63 +27,16 @@ namespace Tmpl8
 		screen->Clear(0);
 	}
 
-	Sprite bullet(new Surface("assets/magic_missile.png"), 1);
+	
 
 	void Game::Tick(float deltaTime)
 	{
 		screen->Clear(0);
 
-		
-		if (bulletFired) {
-			std::cout << "pang" << std::endl;
-			bulletX += bulletDX;
-			bulletY += bulletDY;
-
-			// Check if the bullet is out of bounds
-			if (bulletX < 0 || bulletX >= SCREEN_WIDTH || bulletY < 0 || bulletY >= SCREEN_HEIGHT) {
-				std::cout << "out" << std::endl;
-				bulletX = SCREEN_WIDTH / 2;
-				bulletY = SCREEN_HEIGHT / 2;
-				bulletFired = false;
-			}
-		}
-
-		// Draw bullet
-		if (bulletFired) {
-			std::cout << "draw" << std::endl;
-			std::cout << bulletX  << "," << bulletY << std::endl;
-			bullet.Draw(screen, bulletX, bulletY);
-		}
-
-		
+		Bullet1.Update(screen);
 		IdleAnimation();
-		Update();
-		Render();
 	}
 
-	void Game::Update() 
-	{
-		
-		/*
-		KeyboardUpd()
-		MouseLocUpd()
-		LevelUpd() //EnemyUpd() in here
-		ProjectileUpd()
-		ScoreUpd()
-		*/
-	}
-
-	void Game::Render() 
-	{
-		/*
-		LevelRen() //EnemyRen() in here
-		PlayerRen()
-		ProjectileRen()
-		ScoreRen()
-		*/
-	}
-
-	
 	//animation
 	Sprite Idle_frame_1(new Surface("assets/Wizard-Frames/Idle_frame_1.png"), 1);
 	Sprite Idle_frame_2(new Surface("assets/Wizard-Frames/Idle_frame_2.png"), 1);

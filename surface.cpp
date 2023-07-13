@@ -344,15 +344,15 @@ void Surface::ScaleColor( unsigned int a_Scale )
 	}
 }
 
-Sprite::Sprite( Surface* a_Surface, unsigned int a_NumFrames ) :
-	m_Width( static_cast<int>(a_Surface->GetWidth() / a_NumFrames) ),
-	m_Height( a_Surface->GetHeight() ),
-	m_Pitch(  a_Surface->GetWidth() ),
-	m_NumFrames( a_NumFrames ),
-	m_CurrentFrame( 0 ),
-	m_Flags( 0 ),
-	m_Start( new unsigned int*[a_NumFrames] ),
-	m_Surface( a_Surface )
+Sprite::Sprite(Surface* a_Surface, unsigned int a_NumFrames) :
+	m_Width(static_cast<int>(a_Surface->GetWidth() / a_NumFrames)),
+	m_Height(a_Surface->GetHeight()),
+	m_Pitch(a_Surface->GetWidth()),
+	m_NumFrames(a_NumFrames),
+	m_CurrentFrame(0),
+	m_Flags(0),
+	m_Start(new unsigned int* [a_NumFrames]),
+	m_Surface(a_Surface)
 {
 	InitializeStartData();
 }
@@ -362,6 +362,19 @@ Sprite::~Sprite()
 	delete m_Surface;
 	for ( unsigned int i = 0; i < m_NumFrames; i++ ) delete m_Start[i];
 	delete[] m_Start;
+}
+
+void Sprite::Build(Surface* a_Surface, unsigned int a_NumFrames)
+{
+	m_Width = static_cast<int>(a_Surface->GetWidth() / a_NumFrames);
+	m_Height = a_Surface->GetHeight();
+	m_Pitch = a_Surface->GetWidth();
+	m_NumFrames = a_NumFrames;
+	m_CurrentFrame = 0;
+	m_Flags = 0;
+	m_Start = new unsigned int* [a_NumFrames];
+	m_Surface = a_Surface;
+	InitializeStartData();
 }
 
 void Sprite::Draw( Surface* a_Target, int a_X, int a_Y )
