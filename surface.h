@@ -97,6 +97,7 @@ public:
 	
 	// Structors
 	Sprite( Surface* a_Surface, unsigned int a_NumFrames );
+	Sprite() {};
 	~Sprite();
 	void Build(Surface* a_Surface, unsigned int a_NumFrames);
 	// Method
