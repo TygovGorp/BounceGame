@@ -19,6 +19,7 @@
       <Filter>template code</Filter>
     </ClInclude>
     <ClInclude Include="LevelManager.h" />
+    <ClInclude Include="Bullet.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">

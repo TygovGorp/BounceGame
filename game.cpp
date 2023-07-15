@@ -2,9 +2,16 @@
 #include "surface.h"
 #include <cstdio> //printf
 
+
 namespace Tmpl8
 {
 	
+	const int IdleAnimNumFrames = 8;
+	Sprite idleFrames[IdleAnimNumFrames];
+	int frameLength = 12;
+	int XlocPlayer = 0;
+	int YlocPlayer = 512 - 60;
+
 	// -----------------------------------------------------------
 	// Initialize the application
 	// -----------------------------------------------------------
@@ -17,6 +24,12 @@ namespace Tmpl8
 		PlayerInit();
 		ScoreInit();
 		*/
+
+		//setup IdleAnimation frames for animation in a array
+		for (int i = 0; i < IdleAnimNumFrames; i++)
+		{
+			idleFrames[i].Build(new Surface(StrToCharStar("assets/Wizard-Frames/Idle_frame_", i)), 1);
+		}
 	}
 	
 	// -----------------------------------------------------------
@@ -37,68 +50,13 @@ namespace Tmpl8
 		IdleAnimation();
 	}
 
-	//animation
-	Sprite Idle_frame_1(new Surface("assets/Wizard-Frames/Idle_frame_1.png"), 1);
-	Sprite Idle_frame_2(new Surface("assets/Wizard-Frames/Idle_frame_2.png"), 1);
-	Sprite Idle_frame_3(new Surface("assets/Wizard-Frames/Idle_frame_3.png"), 1);
-	Sprite Idle_frame_4(new Surface("assets/Wizard-Frames/Idle_frame_4.png"), 1);
-	Sprite Idle_frame_5(new Surface("assets/Wizard-Frames/Idle_frame_5.png"), 1);
-	Sprite Idle_frame_6(new Surface("assets/Wizard-Frames/Idle_frame_6.png"), 1);
-	Sprite Idle_frame_7(new Surface("assets/Wizard-Frames/Idle_frame_7.png"), 1);
-	Sprite Idle_frame_8(new Surface("assets/Wizard-Frames/Idle_frame_8.png"), 1);
-	int counter = 0;
-	int frameLength = 12;
-	int XlocPlayer = 0;
-	int YlocPlayer = 512 - 60;
-
+	// Animation
+	int Framecounter = 0;
 	void Game::IdleAnimation()
 	{
-		/*
-		if (counter >= 0)
-		{
-			screen->Clear(0);
-			Idle_frame_1.DrawScaled(XlocPlayer, YlocPlayer, 104, 104, screen);
-		}
-		if (counter > frameLength * 1)
-		{
-			screen->Clear(0);
-			Idle_frame_2.DrawScaled(XlocPlayer, YlocPlayer, 104, 104, screen);
-		}
-		if (counter > frameLength * 2)
-		{
-			screen->Clear(0);
-			Idle_frame_3.DrawScaled(XlocPlayer, YlocPlayer, 104, 104, screen);
-		}
-		if (counter > frameLength * 3)
-		{
-			screen->Clear(0);
-			Idle_frame_4.DrawScaled(XlocPlayer, YlocPlayer, 104, 104, screen);
-		}
-		if (counter > frameLength * 4)
-		{
-			screen->Clear(0);
-			Idle_frame_5.DrawScaled(XlocPlayer, YlocPlayer, 104, 104, screen);
-		}
-		if (counter > frameLength * 5)
-		{
-			screen->Clear(0);
-			Idle_frame_6.DrawScaled(XlocPlayer, YlocPlayer, 104, 104, screen);
-		}
-		if (counter > frameLength * 6)
-		{
-			screen->Clear(0);
-			Idle_frame_7.DrawScaled(XlocPlayer, YlocPlayer, 104, 104, screen);
-		}
-		if (counter > frameLength * 7)
-		{
-			screen->Clear(0);
-			Idle_frame_8.DrawScaled(XlocPlayer, YlocPlayer, 104, 104, screen);
-		}
-		if (counter > frameLength * 8)
-		{
-			counter = 0;
-		}
-		counter++;
-		*/
+		int currentFrame = Framecounter / frameLength % IdleAnimNumFrames;
+		idleFrames[currentFrame].DrawScaled(XlocPlayer, YlocPlayer, 104, 104, screen);
+
+		Framecounter++;
 	}
 };

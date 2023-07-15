@@ -229,6 +229,7 @@
     <ClCompile Include="template.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="LevelManager.h" />
     <ClInclude Include="surface.h" />
