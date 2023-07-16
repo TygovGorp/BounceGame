@@ -1,10 +1,9 @@
 #pragma once
 #include <SDL.h>
-#include <iostream>
-#include <string>
 #include "Bullet.h"
+#include "AnimationManager.h"
 
-using namespace std;
+//using namespace std;
 
 namespace Tmpl8 {
 
@@ -17,15 +16,7 @@ public:
 	const int SCREEN_HEIGHT = 512;
 	Bullet Bullet1;
 
-	char* StrToCharStar( char* filename, int i)
-	{
-		std::string FileNameString = (filename + std::to_string(i + 1) + ".png");
-		char* charPtr = new char[FileNameString.length() + 1];
-		std::strcpy(charPtr, FileNameString.c_str());
-		std::cout << charPtr << std::endl;
-		return charPtr;
-		delete[] charPtr;
-	}
+
 	void SetTarget( Surface* surface ) { screen = surface; }
 	void Init();
 	void Shutdown();
@@ -66,8 +57,6 @@ public:
 			break;
 		}
 	}
-
-	void IdleAnimation();
 
 	static SDL_Renderer* renderer;
 	int MouseX;

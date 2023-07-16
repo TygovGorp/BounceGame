@@ -5,12 +5,7 @@
 
 namespace Tmpl8
 {
-	
-	const int IdleAnimNumFrames = 8;
-	Sprite idleFrames[IdleAnimNumFrames];
-	int frameLength = 12;
-	int XlocPlayer = 0;
-	int YlocPlayer = 512 - 60;
+	AnimationManager IdleAnim;
 
 	// -----------------------------------------------------------
 	// Initialize the application
@@ -24,12 +19,10 @@ namespace Tmpl8
 		PlayerInit();
 		ScoreInit();
 		*/
-
 		//setup IdleAnimation frames for animation in a array
-		for (int i = 0; i < IdleAnimNumFrames; i++)
-		{
-			idleFrames[i].Build(new Surface(StrToCharStar("assets/Wizard-Frames/Idle_frame_", i)), 1);
-		}
+		IdleAnim.init(8, "assets/Wizard-Frames/Idle_frame_", 0, 512 - 60, screen);
+		
+
 	}
 	
 	// -----------------------------------------------------------
@@ -41,22 +34,13 @@ namespace Tmpl8
 	}
 
 	
-
+	int Framecounter = 0;
 	void Game::Tick(float deltaTime)
 	{
 		screen->Clear(0);
 
 		Bullet1.Update(screen);
-		IdleAnimation();
-	}
-
-	// Animation
-	int Framecounter = 0;
-	void Game::IdleAnimation()
-	{
-		int currentFrame = Framecounter / frameLength % IdleAnimNumFrames;
-		idleFrames[currentFrame].DrawScaled(XlocPlayer, YlocPlayer, 104, 104, screen);
-
+		IdleAnim.update(Framecounter);
 		Framecounter++;
 	}
 };

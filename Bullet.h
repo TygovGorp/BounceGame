@@ -26,7 +26,7 @@ namespace Tmpl8
 			bullet.Build(new Surface("assets/magic_missile.png"), 1);
 			int dx = MouseX - (SCREEN_WIDTH / 2);
 			int dy = MouseY - (SCREEN_HEIGHT / 2);
-			double length = std::sqrt(dx * dx + dy * dy);
+			double length = sqrt(dx * dx + dy * dy);
 			int normalizedDX = static_cast<int>(BULLET_SPEED * dx / length);
 			int normalizedDY = static_cast<int>(BULLET_SPEED * dy / length);
 
