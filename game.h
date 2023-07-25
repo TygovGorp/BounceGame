@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include "Bullet.h"
 #include "AnimationManager.h"
+#include "Enemy.h"
 
 //using namespace std;
 
@@ -15,6 +16,7 @@ public:
 	const int SCREEN_WIDTH = 700;
 	const int SCREEN_HEIGHT = 512;
 	Bullet Bullet1;
+	Enemy Enemy1;
 
 
 	void SetTarget( Surface* surface ) { screen = surface; }

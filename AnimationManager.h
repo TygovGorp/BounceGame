@@ -13,30 +13,30 @@ namespace Tmpl8
 		int frameLength = 12;
 		int Xlocation, Ylocation;
 		Surface* Screen;
-		Sprite* idleFrames;
+		Sprite* Frames;
 	public:
 		~AnimationManager()
 		{
-			delete[] idleFrames;
+			delete[] Frames;
 		}
 
 		void init(int NumFrames, char* filename, int Xloc, int Yloc, Surface* ScreenSurface)
 		{
-			idleFrames = new Sprite[NumFrames];
+			Frames = new Sprite[NumFrames];
 			Xlocation = Xloc;
 			Ylocation = Yloc;
 			Screen = ScreenSurface;
 			NumOfFrames = NumFrames;
 			for (int i = 0; i < NumOfFrames; i++)
 			{
-				idleFrames[i].Build(new Surface(StrToCharStar(filename, i)), 1);
+				Frames[i].Build(new Surface(StrToCharStar(filename, i)), 1);
 			}
 		}
 
 		void update(int FrameCounter)
 		{
 			int currentFrame = FrameCounter / frameLength % NumOfFrames;
-			idleFrames[currentFrame].DrawScaled(Xlocation, Ylocation, 104, 104, Screen);
+			Frames[currentFrame].DrawScaled(Xlocation, Ylocation, 104, 104, Screen);
 		}
 
 		char* StrToCharStar(char* filename, int i)
