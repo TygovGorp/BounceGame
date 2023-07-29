@@ -37,7 +37,14 @@ namespace Tmpl8
 		SDL_Rect GetEnemyRect()
 		{
 			return EnemyRect;
-		 }
+		}
+		void GotShot(bool Shot)
+		{
+			if (Shot)
+			{
+				hit = true;
+			}
+		}
 	private:
 		SDL_Rect EnemyRect;
 		AnimationManager IdleAnimationManager;

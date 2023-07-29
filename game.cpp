@@ -43,8 +43,7 @@ namespace Tmpl8
 		Bullet1.Update(screen);
 		IdleAnim.update(Framecounter);
 		Enemy1.Update(screen);
-		bool coliding = AABB(Bullet1.GetBulletRect(), Enemy1.GetEnemyRect());
-		std::cout << coliding << std::endl;
+		Enemy1.GotShot(AABB(Bullet1.GetBulletRect(), Enemy1.GetEnemyRect()));
 		
 		Framecounter++;
 	}
