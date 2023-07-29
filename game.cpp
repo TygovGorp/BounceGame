@@ -22,6 +22,7 @@ namespace Tmpl8
 		//setup IdleAnimation frames for animation in a array
 		IdleAnim.init(8, "assets/Wizard-Frames/Idle_frame_", 0, 512 - 60, screen);
 		Enemy1.Init(screen);
+		Bullet1.init();
 
 	}
 	
@@ -42,6 +43,9 @@ namespace Tmpl8
 		Bullet1.Update(screen);
 		IdleAnim.update(Framecounter);
 		Enemy1.Update(screen);
+		bool coliding = AABB(Bullet1.GetBulletRect(), Enemy1.GetEnemyRect());
+		std::cout << coliding << std::endl;
+		
 		Framecounter++;
 	}
 };

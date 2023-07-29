@@ -44,7 +44,6 @@ namespace Tmpl8
 			std::string FileNameString = (filename + std::to_string(i + 1) + ".png");
 			char* charPtr = new char[FileNameString.length() + 1];
 			std::strcpy(charPtr, FileNameString.c_str());
-			std::cout << charPtr << std::endl;
 			return charPtr;
 			delete[] charPtr;
 		}
