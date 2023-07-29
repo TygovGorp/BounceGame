@@ -12,8 +12,8 @@ namespace Tmpl8
 		const int SCREEN_WIDTH = 700;
 		const int SCREEN_HEIGHT = 512;
 
-		int bulletX = SCREEN_WIDTH / 2;
-		int bulletY = SCREEN_HEIGHT / 2;
+		int bulletX = 0;
+		int bulletY = 512 - 60;
 		int bulletDX = 0;
 		int bulletDY = 0;
 		bool bulletFired = false;
@@ -24,8 +24,8 @@ namespace Tmpl8
 		void Schoot(int MouseX, int MouseY)
 		{
 			bullet.Build(new Surface("assets/magic_missile.png"), 1);
-			int dx = MouseX - (SCREEN_WIDTH / 2);
-			int dy = MouseY - (SCREEN_HEIGHT / 2);
+			int dx = MouseX - (0 / 2);
+			int dy = MouseY - (512 - 60 / 2);
 			double length = sqrt(dx * dx + dy * dy);
 			int normalizedDX = static_cast<int>(BULLET_SPEED * dx / length);
 			int normalizedDY = static_cast<int>(BULLET_SPEED * dy / length);
@@ -48,11 +48,11 @@ namespace Tmpl8
 				bulletY += bulletDY;
 
 				// Check if the bullet is out of bounds
-				if (bulletX < 0 || bulletX >= SCREEN_WIDTH || bulletY < 0 || bulletY >= SCREEN_HEIGHT)
+				if (bulletX < -128 || bulletX >= SCREEN_WIDTH || bulletY < -128 || bulletY >= SCREEN_HEIGHT)
 				{
 					//std::cout << "out" << std::endl;
-					bulletX = SCREEN_WIDTH / 2;
-					bulletY = SCREEN_HEIGHT / 2;
+					bulletX = 0;
+					bulletY = 512 - 60;
 					bulletFired = false;
 				}
 			}
