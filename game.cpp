@@ -6,24 +6,22 @@
 namespace Tmpl8
 {
 	AnimationManager IdleAnim;
+	LevelManager LM;
 
 	// -----------------------------------------------------------
 	// Initialize the application
 	// -----------------------------------------------------------
 	void Game::Init()
 	{	
-		//Game::MouseX = 0;
-		//Game::MouseY = 0;
 		/*
 		LoadLevel();
-		PlayerInit();
 		ScoreInit();
 		*/
 		//setup IdleAnimation frames for animation in a array
 		IdleAnim.init(8, "assets/Wizard-Frames/Idle_frame_", 0, 512 - 60, screen);
 		Enemy1.Init(screen);
 		Bullet1.init();
-
+		LM.init(screen);
 	}
 	
 	// -----------------------------------------------------------

@@ -3,6 +3,7 @@
 #include "Bullet.h"
 #include "AnimationManager.h"
 #include "Enemy.h"
+#include "LevelManager.h"
 
 //using namespace std;
 

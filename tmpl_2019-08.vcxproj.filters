@@ -20,6 +20,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="AnimationManager.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="LevelManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">
