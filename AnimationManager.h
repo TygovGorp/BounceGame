@@ -36,7 +36,7 @@ namespace Tmpl8
 		void update(int FrameCounter)
 		{
 			int currentFrame = FrameCounter / frameLength % NumOfFrames;
-			Frames[currentFrame].DrawScaled(Xlocation, Ylocation, 64, 64, Screen);
+			Frames[currentFrame].DrawScaled(Xlocation, Ylocation, 104, 104, Screen);
 		}
 
 		char* StrToCharStar(char* filename, int i)

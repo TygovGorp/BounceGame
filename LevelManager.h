@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "surface.h"
+#include "game.h"
 using namespace std;
 
 namespace Tmpl8
@@ -11,7 +12,7 @@ namespace Tmpl8
 	class LevelManager
 	{
 	public:
-		void init()
+		void init(Enemy enemy)
 		{
 			
 			//https://www.scaler.com/topics/cpp-read-file-line-by-line/
@@ -20,29 +21,44 @@ namespace Tmpl8
 			if (newfile.is_open()) { //checking whether the file is open
 				string tp;
 				while (getline(newfile, tp, ' ')) { //read data from file object and put it into string.
+					if (EnemyCounter == 2)
+					{
+						cout << EnemyCoordinates[0] << EnemyCoordinates[1] << endl;
+						//enemy.SetLocation(EnemyCoordinates[0], EnemyCoordinates[1]);
+						EnemyCounter = 0;
+						NextEnemyLocation = false;
+					}
+					if (NextEnemyLocation)
+					{
+						EnemyCoordinates.push_back(stoi(tp));
+						EnemyCounter++;
+					}
+					if (tp.find("EnemyLocation") != std::string::npos)
+					{
+						NextEnemyLocation = true;
+					}
 					switch (pointofline)
 					{
 					case 0:
-						coordinates.push_back(stoi(tp));
+						WallCoordinates.push_back(stoi(tp));
 						pointofline++;
 						break;
 					case 1:
-						coordinates.push_back(stoi(tp));
+						WallCoordinates.push_back(stoi(tp));
 						pointofline++;
 						break;
 					case 2:
-						coordinates.push_back(stoi(tp));
+						WallCoordinates.push_back(stoi(tp));
 						pointofline++;
 						break;
 					case 3:
-						coordinates.push_back(stoi(tp));
-						cout << coordinates[0 + 4 * loops] << "," << coordinates[1 + 4 * loops] << " "; //print the data of the coordinates
-						cout << coordinates[2 + 4 * loops] << "," << coordinates[3 + 4 * loops] << "\n"; //print the data of the coordinates
+						WallCoordinates.push_back(stoi(tp));
 						loops++;
 						pointofline = 0;
 						break;
 					}
 				}
+				
 				newfile.close(); //close the file object.
 			}
 		}
@@ -50,12 +66,16 @@ namespace Tmpl8
 		{
 			for (int i = 0; i < loops; i++)
 			{
-				ScreenSurface->Line(coordinates[0 + 4 * i], coordinates[1 + 4 * i], coordinates[2 + 4 * i], coordinates[3 + 4 * i], 0xffffff);
+				ScreenSurface->Line(WallCoordinates[0 + 4 * i], WallCoordinates[1 + 4 * i], WallCoordinates[2 + 4 * i], WallCoordinates[3 + 4 * i], 0xffffff);
 			}
 		}
 	private:
-		vector<int> coordinates;
+		int EnemyCounter = 0;
+		bool NextEnemyLocation = false;
+		vector<int> WallCoordinates;
+		vector<int> EnemyCoordinates;
 		int loops = 0;
 		int pointofline = 0;
+
 	};
 }
