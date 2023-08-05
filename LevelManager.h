@@ -12,7 +12,7 @@ namespace Tmpl8
 	class LevelManager
 	{
 	public:
-		vector<int> init()
+		 void init()
 		{
 			//https://www.scaler.com/topics/cpp-read-file-line-by-line/
 			fstream newfile;
@@ -22,7 +22,6 @@ namespace Tmpl8
 				while (getline(newfile, tp, ' ')) { //read data from file object and put it into string.
 					if (EnemyCounter == 2)
 					{
-						cout << EnemyCoordinates[0] << EnemyCoordinates[1] << endl;
 						EnemyCounter = 0;
 						NextEnemyLocation = false;
 					}
@@ -57,9 +56,19 @@ namespace Tmpl8
 					}
 				}
 				newfile.close(); //close the file object.
-				return EnemyCoordinates;
 			}
 		}
+
+		 vector<int> ReturnEnemyCoordinates()
+		 {
+			 return EnemyCoordinates;
+		 }
+
+		 vector<int> ReturnWallCoordinates()
+		 {
+			 return WallCoordinates;
+		 }
+
 		void update(Surface* ScreenSurface)
 		{
 			for (int i = 0; i < loops; i++)
@@ -67,6 +76,8 @@ namespace Tmpl8
 				ScreenSurface->Line(WallCoordinates[0 + 4 * i], WallCoordinates[1 + 4 * i], WallCoordinates[2 + 4 * i], WallCoordinates[3 + 4 * i], 0xffffff);
 			}
 		}
+
+
 	private:
 		int EnemyCounter = 0;
 		bool NextEnemyLocation = false;

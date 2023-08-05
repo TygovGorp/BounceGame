@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+#include <vector>
 #include "Bullet.h"
 #include "AnimationManager.h"
 #include "Enemy.h"
@@ -16,7 +17,7 @@ public:
 	const int SCREEN_WIDTH = 700;
 	const int SCREEN_HEIGHT = 512;
 	Bullet Bullet1;
-	Enemy Enemy1;
+	vector<Enemy> EnemyVec;
 
 	void SetTarget( Surface* surface ) { screen = surface; }
 	void Init();
@@ -77,5 +78,6 @@ public:
 	int MouseY;
 private:
 	Surface* screen;
+	int NumberOfEnemys;
 };
 }; // namespace Tmpl8

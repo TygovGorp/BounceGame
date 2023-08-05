@@ -8,6 +8,7 @@ namespace Tmpl8
 	AnimationManager IdleAnim;
 	LevelManager LM;
 	vector<int> EnemyCoordinates;
+	vector<int> WallCoordinates;
 
 	// -----------------------------------------------------------
 	// Initialize the application
@@ -20,9 +21,19 @@ namespace Tmpl8
 		//setup IdleAnimation frames for animation in a array
 		IdleAnim.init(8, "assets/Wizard-Frames/idle_frame_", 0, 512 - 104, screen);
 		Bullet1.init();
-		EnemyCoordinates = LM.init();
-		cout << EnemyCoordinates[0] << EnemyCoordinates[1] << endl;
-		Enemy1.Init(screen, EnemyCoordinates[0], EnemyCoordinates[1]);
+
+		LM.init();
+		EnemyCoordinates = LM.ReturnEnemyCoordinates();
+		WallCoordinates = LM.ReturnWallCoordinates();
+
+
+		NumberOfEnemys = EnemyCoordinates.size() / 2;
+		for (int i = 0; i < NumberOfEnemys; i++)
+		{
+			EnemyVec.push_back(Enemy{});
+			EnemyVec[i].Init(screen, EnemyCoordinates[0], EnemyCoordinates[1]);
+		}
+		
 	}
 	
 	// -----------------------------------------------------------
@@ -42,8 +53,13 @@ namespace Tmpl8
 		LM.update(screen);
 		Bullet1.Update(screen);
 		IdleAnim.update(Framecounter);
-		Enemy1.Update(); //problem with this function screen buffer
-		Enemy1.GotShot(AABB(Bullet1.GetBulletRect(), Enemy1.GetEnemyRect()));
+
+		for (int i = 0; i < NumberOfEnemys; i++)
+		{
+			EnemyVec[i].Update();
+			EnemyVec[i].GotShot(AABB(Bullet1.GetBulletRect(), EnemyVec[i].GetEnemyRect()));
+		}
+		
 		
 		Framecounter++;
 	}
