@@ -12,9 +12,8 @@ namespace Tmpl8
 	class LevelManager
 	{
 	public:
-		void init(Enemy enemy)
+		vector<int> init()
 		{
-			
 			//https://www.scaler.com/topics/cpp-read-file-line-by-line/
 			fstream newfile;
 			newfile.open("Levels/Level_1.txt", ios::in); //open a file to perform read operation using file object
@@ -24,7 +23,6 @@ namespace Tmpl8
 					if (EnemyCounter == 2)
 					{
 						cout << EnemyCoordinates[0] << EnemyCoordinates[1] << endl;
-						//enemy.SetLocation(EnemyCoordinates[0], EnemyCoordinates[1]);
 						EnemyCounter = 0;
 						NextEnemyLocation = false;
 					}
@@ -58,8 +56,8 @@ namespace Tmpl8
 						break;
 					}
 				}
-				
 				newfile.close(); //close the file object.
+				return EnemyCoordinates;
 			}
 		}
 		void update(Surface* ScreenSurface)

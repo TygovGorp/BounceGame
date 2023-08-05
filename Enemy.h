@@ -8,12 +8,12 @@ namespace Tmpl8
 	class Enemy
 	{
 	public:
-		void Init(Surface* ScreenSurface)
+		void Init(Surface* ScreenSurface, int x, int y)
 		{
 			EnemyRect.h = 104;
 			EnemyRect.w = 104;
-			EnemyRect.x = 0;
-			EnemyRect.y = 0;
+			EnemyRect.x = x;
+			EnemyRect.y = y;
 			IdleAnimationManager.init(4, "assets/Enemy-Frames/Idle_frame_", EnemyRect.x, EnemyRect.y, ScreenSurface);
 			DeathAnimationManager.init(4, "assets/Enemy-Frames/Death_frame_", EnemyRect.x, EnemyRect.y, ScreenSurface);
 		}
@@ -44,11 +44,6 @@ namespace Tmpl8
 			{
 				hit = true;
 			}
-		}
-		void SetLocation(int x, int y)
-		{
-			EnemyRect.x = x;
-			EnemyRect.y = y;
 		}
 	private:
 		SDL_Rect EnemyRect;
