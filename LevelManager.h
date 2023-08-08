@@ -37,19 +37,19 @@ namespace Tmpl8
 					switch (pointofline)
 					{
 					case 0:
-						WallCoordinates.push_back(stoi(tp));
+						WallPoints.push_back(stoi(tp));
 						pointofline++;
 						break;
 					case 1:
-						WallCoordinates.push_back(stoi(tp));
+						WallPoints.push_back(stoi(tp));
 						pointofline++;
 						break;
 					case 2:
-						WallCoordinates.push_back(stoi(tp));
+						WallPoints.push_back(stoi(tp));
 						pointofline++;
 						break;
 					case 3:
-						WallCoordinates.push_back(stoi(tp));
+						WallPoints.push_back(stoi(tp));
 						loops++;
 						pointofline = 0;
 						break;
@@ -64,23 +64,35 @@ namespace Tmpl8
 			 return EnemyCoordinates;
 		 }
 
-		 vector<int> ReturnWallCoordinates()
-		 {
-			 return WallCoordinates;
-		 }
 
 		void update(Surface* ScreenSurface)
 		{
 			for (int i = 0; i < loops; i++)
 			{
-				ScreenSurface->Line(WallCoordinates[0 + 4 * i], WallCoordinates[1 + 4 * i], WallCoordinates[2 + 4 * i], WallCoordinates[3 + 4 * i], 0xffffff);
+				ScreenSurface->Line(WallPoints[0 + 4 * i], WallPoints[1 + 4 * i], WallPoints[2 + 4 * i], WallPoints[3 + 4 * i], 0xffffff);
 			}
 		}
 
+		void WallColissionInit()
+		{
+			for (int i = 0; i < WallPoints.size(); i++)
+			{
+				for (int j = 0; j <= WallPoints[i]; j++)
+				{
+					WallCoordinates.push_back(j);
+				}
+			}
+		}
+
+		vector<int> ReturnWallCoordinates()
+		{
+			return WallCoordinates;
+		}
 
 	private:
 		int EnemyCounter = 0;
 		bool NextEnemyLocation = false;
+		vector<int> WallPoints;
 		vector<int> WallCoordinates;
 		vector<int> EnemyCoordinates;
 		int loops = 0;

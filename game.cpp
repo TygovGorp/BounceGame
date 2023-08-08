@@ -18,13 +18,16 @@ namespace Tmpl8
 		/*
 		ScoreInit();
 		*/
+
 		//setup IdleAnimation frames for animation in a array
 		IdleAnim.init(8, "assets/Wizard-Frames/idle_frame_", 0, 512 - 104, screen);
 		Bullet1.init();
 
 		LM.init();
+		LM.WallColissionInit();
 		EnemyCoordinates = LM.ReturnEnemyCoordinates();
 		WallCoordinates = LM.ReturnWallCoordinates();
+
 
 
 		NumberOfEnemys = EnemyCoordinates.size() / 2;
@@ -51,13 +54,25 @@ namespace Tmpl8
 		screen->Clear(0);
 
 		LM.update(screen);
-		Bullet1.Update(screen);
 		IdleAnim.update(Framecounter);
+		Bullet1.Update(screen);
 
 		for (int i = 0; i < NumberOfEnemys; i++)
 		{
 			EnemyVec[i].Update();
 			EnemyVec[i].GotShot(AABB(Bullet1.GetBulletRect(), EnemyVec[i].GetEnemyRect()));
+		}
+		for (int i = 0; i < WallCoordinates.size(); i = i + 2)
+		{
+			if (i + 1 < WallCoordinates.size())
+			{
+				if (AABB(WallCoordinates[i], WallCoordinates[i + 1], Bullet1.GetBulletRect()))
+				{
+					cout << "bounce" << endl;
+				}
+			}
+
+			
 		}
 		
 		

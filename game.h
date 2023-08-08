@@ -72,6 +72,21 @@ public:
 		}
 		return false;
 	}
+	bool AABB(int x, int y, const SDL_Rect& recB)
+	{
+		int w = 1;
+		int h = 1;
+		if (
+			x + w >= recB.x &&
+			recB.x + recB.w >= x &&
+			y + h >= recB.y &&
+			recB.y + recB.h >= y
+			)
+		{
+			return true;
+		}
+		return false;
+	}
 
 	static SDL_Renderer* renderer;
 	int MouseX;
