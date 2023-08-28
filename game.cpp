@@ -68,7 +68,7 @@ namespace Tmpl8
 			{
 				if (AABB(WallCoordinates[i], WallCoordinates[i + 1], Bullet1.GetBulletRect()))
 				{
-					cout << "bounce" << endl;
+
 				}
 			}
 
