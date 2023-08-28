@@ -87,6 +87,21 @@ public:
 		}
 		return false;
 	}
+	bool AABB(int Ax, int Ay, int Bx, int By)
+	{
+		int w = 1;
+		int h = 1;
+		if (
+			Ax + w >= Bx &&
+			Bx + w >= Ax &&
+			Ay + h >= By &&
+			By + h >= Ay
+			)
+		{
+			return true;
+		}
+		return false;
+	}
 
 	static SDL_Renderer* renderer;
 	int MouseX;

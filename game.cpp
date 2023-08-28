@@ -1,6 +1,5 @@
 #include "game.h"
 #include "surface.h"
-#include <cstdio> //printf
 
 
 namespace Tmpl8
@@ -60,14 +59,15 @@ namespace Tmpl8
 		for (int i = 0; i < NumberOfEnemys; i++)
 		{
 			EnemyVec[i].Update();
-			EnemyVec[i].GotShot(AABB(Bullet1.GetBulletRect(), EnemyVec[i].GetEnemyRect()));
+			EnemyVec[i].GotShot(AABB(Bullet1.GetBulletX(), Bullet1.GetBulletY(), EnemyVec[i].GetEnemyRect()));
 		}
 		for (int i = 0; i < WallCoordinates.size(); i = i + 2)
 		{
 			if (i + 1 < WallCoordinates.size())
 			{
-				if (AABB(WallCoordinates[i], WallCoordinates[i + 1], Bullet1.GetBulletRect()))
+				if (AABB(WallCoordinates[i], WallCoordinates[i + 1], Bullet1.GetBulletX(), Bullet1.GetBulletY()))
 				{
+					cout << "wall hit" << endl;
 
 				}
 			}

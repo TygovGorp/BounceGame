@@ -102,8 +102,8 @@ namespace Tmpl8
 		{
 			if (bulletFired)
 			{
-				BulletRectX += bulletDX;
-				BulletRectY += bulletDY;
+				BulletRectX += bulletDX * 2;
+				BulletRectY += bulletDY * 2;
 
 				// Check if the bullet is out of bounds
 				if (BulletRectX < -128 || BulletRectX >= SCREEN_WIDTH || BulletRectY < -128 || BulletRectY >= SCREEN_HEIGHT)
@@ -123,6 +123,15 @@ namespace Tmpl8
 		SDL_Rect GetBulletRect()
 		{
 			return BulletRect;
+		}
+
+		float GetBulletX()
+		{
+			return BulletRectX;
+		}
+		float GetBulletY()
+		{
+			return BulletRectY;
 		}
 	};
 };
