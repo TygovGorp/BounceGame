@@ -5,6 +5,7 @@
 #include "AnimationManager.h"
 #include "Enemy.h"
 #include "LevelManager.h"
+#include "Point.h"
 
 //using namespace std;
 
@@ -96,6 +97,19 @@ public:
 			Bx + w >= Ax &&
 			Ay + h >= By &&
 			By + h >= Ay
+			)
+		{
+			return true;
+		}
+		return false;
+	}
+	bool AABB(int Ax, int Ay, int Aw, int Ah, int Bx, int By, int Bw, int Bh)
+	{
+		if (
+			Ax + Aw >= Bx &&
+			Bx + Bw >= Ax &&
+			Ay + Ah >= By &&
+			By + Bh >= Ay
 			)
 		{
 			return true;

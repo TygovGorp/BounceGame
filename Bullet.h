@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include "game.h"
 #include "surface.h"
+#include "Point.h"
 
 using namespace std;
 namespace Tmpl8
@@ -24,50 +25,23 @@ namespace Tmpl8
 		bool XorYEqualToOne; // x = true y = false
 
 		SDL_Rect BulletRect;
-		float BulletRectX;
-		float BulletRectY;
+		float BulletX;
+		float BulletY;
 	public:
 		Sprite bullet;
 		
 		void init()
 		{
-			BulletRect.h = 128;
-			BulletRect.w = 128;
-			BulletRectX = 0;
-			BulletRectY = 512 - 60;
-
+			//BulletRect.h = 36;
+			//BulletRect.w = 86;
+			BulletRect.h = 1;
+			BulletRect.w = 1;
+			BulletX = 0;
+			BulletY = 512 - 60;
 		}
 
 		void Schoot(int MouseX, int MouseY)
 		{
-			//if (bulletFired == false)
-			//{
-			//	tempMouseX = MouseX;
-			//	tempMouseY = MouseY;
-
-			//	bullet.Build(new Surface("assets/magic_missile.png"), 1);
-
-			//	if (MouseX > MouseY)
-			//	{
-			//		bulletDY = tempMouseY / tempMouseX;
-			//		bulletDX = 1;
-			//		XorYEqualToOne = true;
-			//	}
-			//	else
-			//	{
-			//		bulletDX = tempMouseX / tempMouseY;
-			//		bulletDY = 1;
-			//		XorYEqualToOne = false;
-			//	}
-
-			//	cout << bulletDX << "," << bulletDY << endl;
-
-			//	// Fire the bullet
-			//	if (bulletFired != true)
-			//	{
-			//		bulletFired = true;
-			//	}
-			//}
 			if (!bulletFired)
 			{
 				tempMouseX = MouseX;
@@ -75,8 +49,8 @@ namespace Tmpl8
 
 				bullet.Build(new Surface("assets/magic_missile.png"), 1);
 
-				bulletDX = MouseX - BulletRectX; // Calculate the direction vector components
-				bulletDY = MouseY - BulletRectY;
+				bulletDX = MouseX - BulletX; // Calculate the direction vector components
+				bulletDY = MouseY - BulletY;
 
 				// Calculate the magnitude of the movement vector
 				double magnitude = sqrt(bulletDX * bulletDX + bulletDY * bulletDY);
@@ -92,8 +66,6 @@ namespace Tmpl8
 
 				XorYEqualToOne = abs(bulletDX) > abs(bulletDY);
 
-				cout << bulletDX << "," << bulletDY << endl;
-
 				// Fire the bullet
 				bulletFired = true;
 			}
@@ -102,36 +74,79 @@ namespace Tmpl8
 		{
 			if (bulletFired)
 			{
-				BulletRectX += bulletDX * 2;
-				BulletRectY += bulletDY * 2;
+				BulletX += bulletDX * 2;
+				BulletY += bulletDY * 2;
 
 				// Check if the bullet is out of bounds
-				if (BulletRectX < -128 || BulletRectX >= SCREEN_WIDTH || BulletRectY < -128 || BulletRectY >= SCREEN_HEIGHT)
+				if (BulletX < -128 || BulletX >= SCREEN_WIDTH || BulletY < -128 || BulletY >= SCREEN_HEIGHT)
 				{
-					BulletRectX = 0;
-					BulletRectY = 512 - 60;
+					BulletX = 0;
+					BulletY = 512 - 60;
 					bulletFired = false;
 				}
 			}
 			if (bulletFired) //in seperate if function because of despawning out of bouds of the screen
 			{
 				// Draw bullet
-				bullet.Draw(screen, BulletRectX, BulletRectY);
-				//cout << BulletRectX << ", " << BulletRectY << endl;
+				bullet.Draw(screen, BulletX, BulletY);
+				//cout << BulletX << ", " << BulletY << endl;
 			}
 		}
+
+		bool CheckCollision(const std::vector<Point>& wallCoordinates) {
+			for (int i = 0; i < wallCoordinates.size(); i++)
+			{
+				if (BulletX == wallCoordinates[i].x && BulletY == wallCoordinates[i].y)
+				{
+					return true;
+				}
+			}
+			return false;
+
+			 
+
+			/*double bulletMagnitude = sqrt(bullet.GetBulletX() * bullet.GetBulletX() + bullet.GetBulletY() * bullet.GetBulletY());
+
+
+			if (bulletMagnitude < 1e-6) {
+				for (int wallCoord : wallCoordinates) {
+					if (abs(bullet.GetBulletY() - wallCoord) < 1e-6) {
+						return true;
+					}
+				}
+			}
+
+			return false;*/
+		}
+
+		void InvertY()
+		{
+			bulletDY = -bulletDY;
+		}
+		void InvertX()
+		{
+			bulletDX = -bulletDX;
+		}
+
 		SDL_Rect GetBulletRect()
 		{
 			return BulletRect;
 		}
-
 		float GetBulletX()
 		{
-			return BulletRectX;
+			return BulletX;
 		}
 		float GetBulletY()
 		{
-			return BulletRectY;
+			return BulletY;
+		}
+		int GetBulletW()
+		{
+			return BulletRect.w;
+		}
+		int GetBulletH()
+		{
+			return BulletRect.h;
 		}
 	};
 };

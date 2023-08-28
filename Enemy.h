@@ -2,18 +2,19 @@
 #include<iostream>
 #include "AnimationManager.h"
 #include "surface.h"
+#include "Point.h"
 
 namespace Tmpl8
 {
 	class Enemy
 	{
 	public:
-		void Init(Surface* ScreenSurface, int x, int y)
+		void Init(Surface* ScreenSurface, Point EnemyLoc)
 		{
 			EnemyRect.h = 104;
 			EnemyRect.w = 104;
-			EnemyRect.x = x;
-			EnemyRect.y = y;
+			EnemyRect.x = EnemyLoc.x;
+			EnemyRect.y = EnemyLoc.y;
 			IdleAnimationManager.init(4, "assets/Enemy-Frames/Idle_frame_", EnemyRect.x, EnemyRect.y, ScreenSurface);
 			DeathAnimationManager.init(4, "assets/Enemy-Frames/Death_frame_", EnemyRect.x, EnemyRect.y, ScreenSurface);
 		}
