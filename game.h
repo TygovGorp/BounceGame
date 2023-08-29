@@ -122,5 +122,6 @@ public:
 	int MouseY;
 private:
 	Surface* screen;
+	int NumberOfEnemys;
 };
 }; // namespace Tmpl8
