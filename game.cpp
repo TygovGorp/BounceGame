@@ -30,10 +30,12 @@ namespace Tmpl8
 		WallCoordinates = LM.ReturnWallCoordinates();
 
 
-		for (int i = 0; i < EnemyCoordinates.size(); i++)
+
+		NumberOfEnemys = EnemyCoordinates.size() / 2;
+		for (int i = 0; i < NumberOfEnemys; i++)
 		{
 			EnemyVec.push_back(Enemy{});
-			EnemyVec[i].Init(screen, EnemyCoordinates[i]);
+			EnemyVec[i].Init(screen, EnemyCoordinates[1]);
 		}
 		
 	}

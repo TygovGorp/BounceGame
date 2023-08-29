@@ -15,7 +15,6 @@ namespace Tmpl8
 			EnemyRect.w = 104;
 			EnemyRect.x = EnemyLoc.x;
 			EnemyRect.y = EnemyLoc.y;
-			cout << EnemyRect.x << ", " << EnemyRect.y << endl;
 			IdleAnimationManager.init(4, "assets/Enemy-Frames/Idle_frame_", EnemyRect.x, EnemyRect.y, ScreenSurface);
 			DeathAnimationManager.init(4, "assets/Enemy-Frames/Death_frame_", EnemyRect.x, EnemyRect.y, ScreenSurface);
 		}
