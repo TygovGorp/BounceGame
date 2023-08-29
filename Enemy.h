@@ -21,7 +21,6 @@ namespace Tmpl8
 		}
 		void Update()
 		{
-			cout << "Update" << endl;
 			if (hit == false && dead == false)
 			{
 				IdleAnimationManager.update(counter);
