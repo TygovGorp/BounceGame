@@ -1,14 +1,15 @@
 #include "game.h"
 #include "surface.h"
-#include <cstdio> //printf
 
 
 namespace Tmpl8
 {
 	AnimationManager IdleAnim;
 	LevelManager LM;
-	vector<int> EnemyCoordinates;
-	vector<int> WallCoordinates;
+	vector<Point> EnemyCoordinates;
+	vector<Point> WallCoordinates;
+
+
 
 	// -----------------------------------------------------------
 	// Initialize the application
@@ -29,12 +30,10 @@ namespace Tmpl8
 		WallCoordinates = LM.ReturnWallCoordinates();
 
 
-
-		NumberOfEnemys = EnemyCoordinates.size() / 2;
-		for (int i = 0; i < NumberOfEnemys; i++)
+		for (int i = 0; i < EnemyCoordinates.size(); i++)
 		{
 			EnemyVec.push_back(Enemy{});
-			EnemyVec[i].Init(screen, EnemyCoordinates[0], EnemyCoordinates[1]);
+			EnemyVec[i].Init(screen, EnemyCoordinates[i]);
 		}
 		
 	}
@@ -60,22 +59,12 @@ namespace Tmpl8
 		for (int i = 0; i < NumberOfEnemys; i++)
 		{
 			EnemyVec[i].Update();
-			EnemyVec[i].GotShot(AABB(Bullet1.GetBulletRect(), EnemyVec[i].GetEnemyRect()));
+			EnemyVec[i].GotShot(AABB(Bullet1.GetBulletX(), Bullet1.GetBulletY(), EnemyVec[i].GetEnemyRect()));
 		}
-		for (int i = 0; i < WallCoordinates.size(); i = i + 2)
-		{
-			if (i + 1 < WallCoordinates.size())
-			{
-				if (AABB(WallCoordinates[i], WallCoordinates[i + 1], Bullet1.GetBulletRect()))
-				{
-					cout << "bounce" << endl;
-				}
-			}
 
-			
+		if (Bullet1.CheckCollision(WallCoordinates)) {
+			Bullet1.InvertY();
+			std::cout << "Hit" << std::endl;
 		}
-		
-		
-		Framecounter++;
 	}
 };

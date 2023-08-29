@@ -1,9 +1,12 @@
 #pragma once
+#include <iostream>
 #include <math.h>  
 #include <SDL.h>
 #include "game.h"
 #include "surface.h"
+#include "Point.h"
 
+using namespace std;
 namespace Tmpl8
 {
 	class Bullet
@@ -13,66 +16,137 @@ namespace Tmpl8
 		const int SCREEN_WIDTH = 700;
 		const int SCREEN_HEIGHT = 512;
 
-		int bulletDX = 0;
-		int bulletDY = 0;
+		float bulletDX = 0;
+		float bulletDY = 0;
 		bool bulletFired = false;
 
-		SDL_Rect BulletRect;
+		float tempMouseX;
+		float tempMouseY;
+		bool XorYEqualToOne; // x = true y = false
 
+		SDL_Rect BulletRect;
+		float BulletX;
+		float BulletY;
 	public:
 		Sprite bullet;
 		
 		void init()
 		{
-			BulletRect.h = 128;
-			BulletRect.w = 128;
-			BulletRect.x = 0;
-			BulletRect.y = 512 - 60;
+			//BulletRect.h = 36;
+			//BulletRect.w = 86;
+			BulletRect.h = 1;
+			BulletRect.w = 1;
+			BulletX = 0;
+			BulletY = 512 - 60;
 		}
 
 		void Schoot(int MouseX, int MouseY)
 		{
-			bullet.Build(new Surface("assets/magic_missile.png"), 1);
-			int dx = MouseX - (0 / 2);
-			int dy = MouseY - (512 - 60 / 2);
-			double length = sqrt(dx * dx + dy * dy);
-			int normalizedDX = static_cast<int>(BULLET_SPEED * dx / length);
-			int normalizedDY = static_cast<int>(BULLET_SPEED * dy / length);
-
-			// Fire the bullet
-			if (bulletFired != true)
+			if (!bulletFired)
 			{
-				bulletFired = true;
-				bulletDX = normalizedDX;
-				bulletDY = normalizedDY;
-			}
+				tempMouseX = MouseX;
+				tempMouseY = MouseY;
 
+				bullet.Build(new Surface("assets/magic_missile.png"), 1);
+
+				bulletDX = MouseX - BulletX; // Calculate the direction vector components
+				bulletDY = MouseY - BulletY;
+
+				// Calculate the magnitude of the movement vector
+				double magnitude = sqrt(bulletDX * bulletDX + bulletDY * bulletDY);
+
+				// Check for magnitude close to zero
+				if (magnitude < 1e-6) {
+					// Set a minimum magnitude to avoid division by zero
+					magnitude = 1.0;
+				}
+
+				bulletDX /= magnitude; // Normalize the direction vector
+				bulletDY /= magnitude;
+
+				XorYEqualToOne = abs(bulletDX) > abs(bulletDY);
+
+				// Fire the bullet
+				bulletFired = true;
+			}
 		}
 		void Update(Surface* screen)
 		{
 			if (bulletFired)
 			{
-				BulletRect.x += bulletDX;
-				BulletRect.y += bulletDY;
+				BulletX += bulletDX * 2;
+				BulletY += bulletDY * 2;
 
 				// Check if the bullet is out of bounds
-				if (BulletRect.x < -128 || BulletRect.x >= SCREEN_WIDTH || BulletRect.y < -128 || BulletRect.y >= SCREEN_HEIGHT)
+				if (BulletX < -128 || BulletX >= SCREEN_WIDTH || BulletY < -128 || BulletY >= SCREEN_HEIGHT)
 				{
-					//std::cout << "out" << std::endl;
-					BulletRect.x = 0;
-					BulletRect.y = 512 - 60;
+					BulletX = 0;
+					BulletY = 512 - 60;
 					bulletFired = false;
 				}
 			}
-			if (bulletFired)
+			if (bulletFired) //in seperate if function because of despawning out of bouds of the screen
 			{
 				// Draw bullet
-				bullet.Draw(screen, BulletRect.x, BulletRect.y);
+				bullet.Draw(screen, BulletX, BulletY);
+				//cout << BulletX << ", " << BulletY << endl;
 			}
 		}
+
+		bool CheckCollision(const std::vector<Point>& wallCoordinates) {
+			for (int i = 0; i < wallCoordinates.size(); i++)
+			{
+				if (BulletX == wallCoordinates[i].x && BulletY == wallCoordinates[i].y)
+				{
+					return true;
+				}
+			}
+			return false;
+
+			 
+
+			/*double bulletMagnitude = sqrt(bullet.GetBulletX() * bullet.GetBulletX() + bullet.GetBulletY() * bullet.GetBulletY());
+
+
+			if (bulletMagnitude < 1e-6) {
+				for (int wallCoord : wallCoordinates) {
+					if (abs(bullet.GetBulletY() - wallCoord) < 1e-6) {
+						return true;
+					}
+				}
+			}
+
+			return false;*/
+		}
+
+		void InvertY()
+		{
+			bulletDY = -bulletDY;
+		}
+		void InvertX()
+		{
+			bulletDX = -bulletDX;
+		}
+
 		SDL_Rect GetBulletRect()
 		{
 			return BulletRect;
+		}
+		float GetBulletX()
+		{
+			return BulletX;
+		}
+		float GetBulletY()
+		{
+			return BulletY;
+		}
+		int GetBulletW()
+		{
+			return BulletRect.w;
+		}
+		int GetBulletH()
+		{
+			return BulletRect.h;
 		}
 	};
 };

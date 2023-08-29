@@ -21,6 +21,7 @@
     <ClInclude Include="AnimationManager.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="LevelManager.h" />
+    <ClInclude Include="Point.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">
