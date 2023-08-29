@@ -15,10 +15,16 @@ namespace Tmpl8 {
 	class Game
 	{
 	public:
+
 		const int SCREEN_WIDTH = 700;
 		const int SCREEN_HEIGHT = 512;
 		Bullet BulletObject;
 		vector<Enemy> EnemyVec;
+
+		Game()
+		{
+			BulletObject;
+		}
 
 		void SetTarget(Surface* surface) { screen = surface; }
 		void Init();

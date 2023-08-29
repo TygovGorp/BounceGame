@@ -27,17 +27,13 @@ namespace Tmpl8
 
 		Point BulletLoc;
 	public:
-		Sprite bullet;
-
-		void init()
-		{
-			//BulletRect.h = 36;
-			//BulletRect.w = 86;
-			BulletRect.h = 1;
-			BulletRect.w = 1;
+		Bullet() {
+			BulletRect.h = 36;
+			BulletRect.w = 86;
 			BulletLoc.x = 0;
 			BulletLoc.y = 512 - 60;
 		}
+		Sprite bullet;
 
 		void Schoot(int MouseX, int MouseY)
 		{
