@@ -12,7 +12,6 @@ namespace Tmpl8
 	class Bullet
 	{
 	private:
-		const int BULLET_SPEED = 5;
 		const int SCREEN_WIDTH = 700;
 		const int SCREEN_HEIGHT = 512;
 
@@ -25,19 +24,19 @@ namespace Tmpl8
 		bool XorYEqualToOne; // x = true y = false
 
 		SDL_Rect BulletRect;
-		float BulletX;
-		float BulletY;
+
+		Point BulletLoc;
 	public:
 		Sprite bullet;
-		
+
 		void init()
 		{
 			//BulletRect.h = 36;
 			//BulletRect.w = 86;
 			BulletRect.h = 1;
 			BulletRect.w = 1;
-			BulletX = 0;
-			BulletY = 512 - 60;
+			BulletLoc.x = 0;
+			BulletLoc.y = 512 - 60;
 		}
 
 		void Schoot(int MouseX, int MouseY)
@@ -49,8 +48,8 @@ namespace Tmpl8
 
 				bullet.Build(new Surface("assets/magic_missile.png"), 1);
 
-				bulletDX = MouseX - BulletX; // Calculate the direction vector components
-				bulletDY = MouseY - BulletY;
+				bulletDX = MouseX - BulletLoc.x; // Calculate the direction vector components
+				bulletDY = MouseY - BulletLoc.y;
 
 				// Calculate the magnitude of the movement vector
 				double magnitude = sqrt(bulletDX * bulletDX + bulletDY * bulletDY);
@@ -74,49 +73,30 @@ namespace Tmpl8
 		{
 			if (bulletFired)
 			{
-				BulletX += bulletDX * 2;
-				BulletY += bulletDY * 2;
+				BulletLoc.x += bulletDX * 2;
+				BulletLoc.y += bulletDY * 2;
 
 				// Check if the bullet is out of bounds
-				if (BulletX < -128 || BulletX >= SCREEN_WIDTH || BulletY < -128 || BulletY >= SCREEN_HEIGHT)
+				if (BulletLoc.x < -128 || BulletLoc.x >= SCREEN_WIDTH || BulletLoc.y < -128 || BulletLoc.y >= SCREEN_HEIGHT)
 				{
-					BulletX = 0;
-					BulletY = 512 - 60;
+					BulletLoc.x = 0;
+					BulletLoc.y = 512 - 60;
 					bulletFired = false;
 				}
 			}
-			if (bulletFired) //in seperate if function because of despawning out of bouds of the screen
+			if (bulletFired) //in seperate if function because of despawning when out of bouds of the screen
 			{
 				// Draw bullet
-				bullet.Draw(screen, BulletX, BulletY);
-				//cout << BulletX << ", " << BulletY << endl;
+				bullet.Draw(screen, BulletLoc.x, BulletLoc.y);
 			}
 		}
 
-		bool CheckCollision(const std::vector<Point>& wallCoordinates) {
-			for (int i = 0; i < wallCoordinates.size(); i++)
+		void WallCollision(bool Collision)
+		{
+			if (Collision)
 			{
-				if (BulletX == wallCoordinates[i].x && BulletY == wallCoordinates[i].y)
-				{
-					return true;
-				}
+
 			}
-			return false;
-
-			 
-
-			/*double bulletMagnitude = sqrt(bullet.GetBulletX() * bullet.GetBulletX() + bullet.GetBulletY() * bullet.GetBulletY());
-
-
-			if (bulletMagnitude < 1e-6) {
-				for (int wallCoord : wallCoordinates) {
-					if (abs(bullet.GetBulletY() - wallCoord) < 1e-6) {
-						return true;
-					}
-				}
-			}
-
-			return false;*/
 		}
 
 		void InvertY()
@@ -134,11 +114,11 @@ namespace Tmpl8
 		}
 		float GetBulletX()
 		{
-			return BulletX;
+			return BulletLoc.x;
 		}
 		float GetBulletY()
 		{
-			return BulletY;
+			return BulletLoc.y;
 		}
 		int GetBulletW()
 		{

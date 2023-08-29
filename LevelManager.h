@@ -15,6 +15,7 @@ namespace Tmpl8
 	public:
 		void init()
 		{
+			int TempEnemyX = NULL;
 			fstream newfile;
 			newfile.open("Levels/Level_1.txt", ios::in);
 			if (newfile.is_open()) {
@@ -27,39 +28,42 @@ namespace Tmpl8
 					}
 					if (NextEnemyLocation)
 					{
-						EnemyCoordinates.push_back(Point(stoi(tp), 0));
+						switch (EnemyCounter)
+						{
+						case 0:
+							TempEnemyX = stoi(tp);
+							break;
+						case 1:
+							EnemyCoordinates.push_back(Point(TempEnemyX, stoi(tp)));
+							TempEnemyX = NULL;
+							break;
+						default:
+							break;
+						}
+
 						EnemyCounter++;
 					}
 					if (tp.find("EnemyLocation") != std::string::npos)
 					{
 						NextEnemyLocation = true;
 					}
-					switch (pointofline)
+					if (EnemyCounter < 1)
 					{
-					case 0:
-						WallPoints.push_back(Point(stoi(tp), 0));
-						pointofline++;
-						break;
-					case 1:
-						WallPoints.back().y = stoi(tp);
-						pointofline++;
-						break;
-					case 2:
-						WallPoints.back().x = stoi(tp);
-						pointofline++;
-						break;
-					case 3:
-						WallPoints.back().y = stoi(tp);
-						loops++;
-						pointofline = 0;
-						break;
+						switch (pointofline)
+						{
+						case 0:
+							WallPoints.push_back(Point(stoi(tp), 0));
+							pointofline++;
+							break;
+						case 1:
+							WallPoints.back().y = stoi(tp);
+							loops++;
+							pointofline = 0;
+							break;
+						}
 					}
 				}
 				newfile.close();
-			}
-			for (int i = 0; i < WallPoints.size(); i++)
-			{
-				cout << WallPoints[i].x << ", " << WallPoints[i].y << endl;
 			}
 		}
 
@@ -70,7 +74,7 @@ namespace Tmpl8
 
 		void update(Surface* ScreenSurface)
 		{
-			for (int i = 0; i < loops; i++)
+			for (int i = 0; i < loops; i = i + 2)
 			{
 				ScreenSurface->Line(WallPoints[i].x, WallPoints[i].y, WallPoints[i + 1].x, WallPoints[i + 1].y, 0xffffff);
 			}
