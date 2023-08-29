@@ -56,7 +56,7 @@ namespace Tmpl8
 		IdleAnim.update(Framecounter);
 		Bullet1.Update(screen);
 
-		for (int i = 0; i < NumberOfEnemys; i++)
+		for (int i = 0; i < EnemyCoordinates.size(); i++)
 		{
 			EnemyVec[i].Update();
 			EnemyVec[i].GotShot(AABB(Bullet1.GetBulletX(), Bullet1.GetBulletY(), EnemyVec[i].GetEnemyRect()));
