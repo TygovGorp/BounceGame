@@ -22,7 +22,7 @@ namespace Tmpl8
 
 		//setup IdleAnimation frames for animation in a array
 		IdleAnim.init(8, "assets/Wizard-Frames/idle_frame_", 0, 512 - 104, screen);
-		BulletObject.init();
+		Bullet1.init();
 
 		LM.init();
 		LM.WallColissionInit();
@@ -56,26 +56,17 @@ namespace Tmpl8
 
 		LM.update(screen);
 		IdleAnim.update(Framecounter);
-		BulletObject.Update(screen);
+		Bullet1.Update(screen);
 
 		for (int i = 0; i < NumberOfEnemys; i++)
 		{
 			EnemyVec[i].Update();
-			EnemyVec[i].GotShot(AABB(BulletObject.GetBulletX(), BulletObject.GetBulletY(), EnemyVec[i].GetEnemyRect()));
+			EnemyVec[i].GotShot(AABB(Bullet1.GetBulletX(), Bullet1.GetBulletY(), EnemyVec[i].GetEnemyRect()));
 		}
-		for (int i = 0; i < WallCoordinates.size(); i++)
-		{
-			for (int j = 0; j < BulletObject.GetBulletH() - 2 ; j++)
-			{
-				BulletObject.WallCollision(AABB(BulletObject.GetBulletX(), BulletObject.GetBulletY() + j, WallCoordinates[i].x, WallCoordinates[i].y));
-			}
 
-			for (int j = 0; j < BulletObject.GetBulletW() - 2; j++)
-			{
-				BulletObject.WallCollision(AABB(BulletObject.GetBulletX() + j, BulletObject.GetBulletY(), WallCoordinates[i].x, WallCoordinates[i].y));
-			}
-			
+		if (Bullet1.CheckCollision(WallCoordinates)) {
+			Bullet1.InvertY();
+			std::cout << "Hit" << std::endl;
 		}
-		
 	}
 };

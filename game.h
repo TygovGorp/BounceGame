@@ -17,7 +17,7 @@ class Game
 public:
 	const int SCREEN_WIDTH = 700;
 	const int SCREEN_HEIGHT = 512;
-	Bullet BulletObject;
+	Bullet Bullet1;
 	vector<Enemy> EnemyVec;
 
 	void SetTarget( Surface* surface ) { screen = surface; }
@@ -32,7 +32,7 @@ public:
 	}
 	void MouseDown( int button ) 
 	{
-		BulletObject.Schoot(MouseX, MouseY);
+		Bullet1.Schoot(MouseX, MouseY);
 	}
 
 	void KeyUp( int key ) { /* implement if you want to handle keys */ }
