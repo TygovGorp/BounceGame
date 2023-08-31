@@ -19,10 +19,6 @@ namespace Tmpl8
 		float bulletDY = 0;
 		bool bulletFired = false;
 
-		float tempMouseX;
-		float tempMouseY;
-		bool XorYEqualToOne; // x = true y = false
-
 		SDL_Rect BulletRect;
 
 		Point BulletLoc;
@@ -39,13 +35,12 @@ namespace Tmpl8
 		{
 			if (!bulletFired)
 			{
-				tempMouseX = MouseX;
-				tempMouseY = MouseY;
-
 				bullet.Build(new Surface("assets/magic_missile.png"), 1);
 
 				bulletDX = MouseX - BulletLoc.x; // Calculate the direction vector components
 				bulletDY = MouseY - BulletLoc.y;
+
+				cout << bulletDX << ", " << bulletDY << endl;
 
 				// Calculate the magnitude of the movement vector
 				double magnitude = sqrt(bulletDX * bulletDX + bulletDY * bulletDY);
@@ -59,7 +54,7 @@ namespace Tmpl8
 				bulletDX /= magnitude; // Normalize the direction vector
 				bulletDY /= magnitude;
 
-				XorYEqualToOne = abs(bulletDX) > abs(bulletDY);
+				cout << bulletDX << ", " << bulletDY << "\n" << endl;
 
 				// Fire the bullet
 				bulletFired = true;
@@ -69,8 +64,8 @@ namespace Tmpl8
 		{
 			if (bulletFired)
 			{
-				BulletLoc.x += bulletDX * 2;
-				BulletLoc.y += bulletDY * 2;
+				BulletLoc.x += bulletDX * 4;
+				BulletLoc.y += bulletDY * 4;
 
 				// Check if the bullet is out of bounds
 				if (BulletLoc.x < -128 || BulletLoc.x >= SCREEN_WIDTH || BulletLoc.y < -128 || BulletLoc.y >= SCREEN_HEIGHT)
