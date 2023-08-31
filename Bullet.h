@@ -19,9 +19,27 @@ namespace Tmpl8
 		float bulletDY = 0;
 		bool bulletFired = false;
 
+		Point BulletCollider[4]; // 0=front 1=back 2=top 4=bottom
+
 		SDL_Rect BulletRect;
 
 		Point BulletLoc;
+
+		void SetColliderDetectors()
+		{
+			BulletCollider[0].x = BulletLoc.x + BulletRect.w;
+			BulletCollider[0].y = BulletLoc.y + (BulletRect.h / 2);
+
+			BulletCollider[1].x = BulletLoc.x;
+			BulletCollider[1].y = BulletLoc.y + (BulletRect.h / 2);
+
+			BulletCollider[2].x = BulletLoc.x + (BulletRect.w / 2);
+			BulletCollider[2].y = BulletLoc.y;
+
+			BulletCollider[3].x = BulletLoc.x + (BulletRect.w / 2);
+			BulletCollider[3].y = BulletLoc.y + BulletRect.h;
+		}
+
 	public:
 		Bullet() {
 			BulletRect.h = 36;
@@ -40,8 +58,6 @@ namespace Tmpl8
 				bulletDX = MouseX - BulletLoc.x; // Calculate the direction vector components
 				bulletDY = MouseY - BulletLoc.y;
 
-				cout << bulletDX << ", " << bulletDY << endl;
-
 				// Calculate the magnitude of the movement vector
 				double magnitude = sqrt(bulletDX * bulletDX + bulletDY * bulletDY);
 
@@ -53,8 +69,6 @@ namespace Tmpl8
 
 				bulletDX /= magnitude; // Normalize the direction vector
 				bulletDY /= magnitude;
-
-				cout << bulletDX << ", " << bulletDY << "\n" << endl;
 
 				// Fire the bullet
 				bulletFired = true;
@@ -79,22 +93,50 @@ namespace Tmpl8
 			{
 				// Draw bullet
 				bullet.Draw(screen, BulletLoc.x, BulletLoc.y);
+				SetColliderDetectors();
 			}
 		}
 
-		void WallCollision(bool Collision)
+		void WallCollision(vector<Point> WallCoordinates)
 		{
-			if (Collision)
+			if (bulletFired)
 			{
-
+				for (int i = 0; i < WallCoordinates.size(); i++)
+				{
+					
+					for (int j = 0; j < 4; j++)
+					{
+						if (WallCoordinates[i].x == BulletCollider[j - 1].x && WallCoordinates[i].y == BulletCollider[j - 1].y)
+						{
+							cout << "hit" << endl;
+							switch (j)
+							{
+							case 1:
+								InvertDX();
+								break;
+							case 2:
+								InvertDX();
+								break;
+							case 3:
+								InvertDY();
+								break;
+							case 4:
+								InvertDY();
+								break;
+							default:
+								break;
+							}
+						}
+					}
+				}
 			}
 		}
 
-		void InvertY()
+		void InvertDY()
 		{
 			bulletDY = -bulletDY;
 		}
-		void InvertX()
+		void InvertDX()
 		{
 			bulletDX = -bulletDX;
 		}
@@ -110,14 +152,6 @@ namespace Tmpl8
 		float GetBulletY()
 		{
 			return BulletLoc.y;
-		}
-		int GetBulletW()
-		{
-			return BulletRect.w;
-		}
-		int GetBulletH()
-		{
-			return BulletRect.h;
 		}
 	};
 };

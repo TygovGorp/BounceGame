@@ -28,6 +28,10 @@ namespace Tmpl8
 		EnemyCoordinates = LM.ReturnEnemyCoordinates();
 		WallCoordinates = LM.ReturnWallCoordinates();
 
+		for (int i = 0; i < WallCoordinates.size(); i++)
+		{
+			cout << WallCoordinates[i].x << ", " << WallCoordinates[i].y << endl;
+		}
 
 		for (int i = 0; i < EnemyCoordinates.size(); i++)
 		{
@@ -60,19 +64,8 @@ namespace Tmpl8
 			EnemyVec[i].Update();
 			EnemyVec[i].GotShot(AABB(BulletObject.GetBulletX(), BulletObject.GetBulletY(), EnemyVec[i].GetEnemyRect()));
 		}
-		for (int i = 0; i < WallCoordinates.size(); i++)
-		{
-			for (int j = 0; j < BulletObject.GetBulletH() - 2; j++)
-			{
-				BulletObject.WallCollision(AABB(BulletObject.GetBulletX(), BulletObject.GetBulletY() + j, WallCoordinates[i].x, WallCoordinates[i].y));
-			}
-
-			for (int j = 0; j < BulletObject.GetBulletW() - 2; j++)
-			{
-				BulletObject.WallCollision(AABB(BulletObject.GetBulletX() + j, BulletObject.GetBulletY(), WallCoordinates[i].x, WallCoordinates[i].y));
-			}
-
-		}
+		
+		BulletObject.WallCollision(WallCoordinates);
 
 	}
 };
