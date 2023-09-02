@@ -15,7 +15,12 @@ namespace Tmpl8
 	public:
 		void init()
 		{
-			int TempEnemyX = NULL;
+
+			/*
+			======
+			if there is time left over also make a .json version instead of .txt
+			======
+			*/
 			fstream newfile;
 			newfile.open("Levels/Level_1.txt", ios::in);
 			if (newfile.is_open()) {
@@ -31,11 +36,10 @@ namespace Tmpl8
 						switch (EnemyCounter)
 						{
 						case 0:
-							TempEnemyX = stoi(tp);
+							EnemyCoordinates.push_back(Point(stoi(tp), 0));
 							break;
 						case 1:
-							EnemyCoordinates.push_back(Point(TempEnemyX, stoi(tp)));
-							TempEnemyX = NULL;
+							EnemyCoordinates.back().y = stoi(tp);
 							break;
 						default:
 							break;
@@ -43,11 +47,7 @@ namespace Tmpl8
 
 						EnemyCounter++;
 					}
-					if (tp.find("EnemyLocation") != std::string::npos)
-					{
-						NextEnemyLocation = true;
-					}
-					if (EnemyCounter < 1)
+					else
 					{
 						switch (pointofline)
 						{
@@ -61,6 +61,10 @@ namespace Tmpl8
 							pointofline = 0;
 							break;
 						}
+					}
+					if (tp.find("EnemyLocation") != std::string::npos)
+					{
+						NextEnemyLocation = true;
 					}
 				}
 				newfile.close();
@@ -85,7 +89,8 @@ namespace Tmpl8
 			
 			for (int i = 0; i < WallPoints.size(); i += 2)
 			{
-				cout << WallPoints[i].x << ", " << WallPoints[i].y << endl;
+				//cout << WallPoints[i].x << ", " << WallPoints[i].y << endl;
+				//cout << WallPoints[i+1].x << ", " << WallPoints[i+1].y << endl;
 				if (WallPoints[i].x == WallPoints[i + 1].x)
 				{
 					for (int j = 0; j <= WallPoints[i].y; j++)
@@ -98,6 +103,58 @@ namespace Tmpl8
 					for (int j = 0; j <= WallPoints[i].x; j++)
 					{
 						WallCoordinates.push_back(Point(j, WallPoints[i].y));
+					}
+				}
+				else
+				{
+					Point TempDif;
+					
+					TempDif.x = WallPoints[i].x - WallPoints[i + 1].x;
+					TempDif.y = WallPoints[i].y - WallPoints[i + 1].y;
+
+					Point Add;
+
+					if (WallPoints[i].x < WallPoints[i + 1].x)
+					{
+						if (WallPoints[i].y < WallPoints[i + 1].y)
+						{
+							Add.x = 0;
+							Add.y = 0;
+						}
+						else
+						{
+							Add.x = 0;
+							Add.y = 1;
+						}
+					}
+					else
+					{
+						if (WallPoints[i].y < WallPoints[i + 1].y)
+						{
+							Add.x = 1;
+							Add.y = 0;
+						}
+						else
+						{
+							Add.x = 1;
+							Add.y = 1;
+						}
+					}
+
+					if (TempDif.x < 0)
+					{
+						TempDif.x = -TempDif.x;
+					}
+					if (TempDif.y < 0)
+					{
+						TempDif.y = -TempDif.y;
+					}
+
+					int j = 0;
+					for (float i = 0; i < TempDif.x; i += (TempDif.x / TempDif.y))
+					{
+						WallCoordinates.push_back(Point(WallPoints[j + Add.x].x + i, WallPoints[j + Add.y].y + i));
+						j++;
 					}
 				}
 
