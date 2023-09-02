@@ -30,7 +30,7 @@ namespace Tmpl8
 
 		for (int i = 0; i < WallCoordinates.size(); i++)
 		{
-			cout << WallCoordinates[i].x << ", " << WallCoordinates[i].y << endl;
+			// cout << WallCoordinates[i].x << ", " << WallCoordinates[i].y << endl;
 		}
 
 		for (int i = 0; i < EnemyCoordinates.size(); i++)

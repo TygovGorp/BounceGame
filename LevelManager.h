@@ -74,7 +74,7 @@ namespace Tmpl8
 
 		void update(Surface* ScreenSurface)
 		{
-			for (int i = 0; i < loops; i = i + 2)
+			for (int i = 0; i < loops; i += 2)
 			{
 				ScreenSurface->Line(WallPoints[i].x, WallPoints[i].y, WallPoints[i + 1].x, WallPoints[i + 1].y, 0xffffff);
 			}
@@ -82,12 +82,25 @@ namespace Tmpl8
 
 		void WallColissionInit()
 		{
-			for (const Point& wallPoint : WallPoints)
+			
+			for (int i = 0; i < WallPoints.size(); i += 2)
 			{
-				for (int j = 0; j <= wallPoint.y; j++)
+				cout << WallPoints[i].x << ", " << WallPoints[i].y << endl;
+				if (WallPoints[i].x == WallPoints[i + 1].x)
 				{
-					WallCoordinates.push_back(Point(wallPoint.x, j));
+					for (int j = 0; j <= WallPoints[i].y; j++)
+					{
+						WallCoordinates.push_back(Point(WallPoints[i].x, j));
+					}
 				}
+				if (WallPoints[i].y == WallPoints[i + 1].y)
+				{
+					for (int j = 0; j <= WallPoints[i].x; j++)
+					{
+						WallCoordinates.push_back(Point(j, WallPoints[i].y));
+					}
+				}
+
 			}
 		}
 
