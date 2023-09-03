@@ -84,80 +84,47 @@ namespace Tmpl8
 			}
 		}
 
-		void WallColissionInit()
-		{
-			
-			for (int i = 0; i < WallPoints.size(); i += 2)
-			{
-				//cout << WallPoints[i].x << ", " << WallPoints[i].y << endl;
-				//cout << WallPoints[i+1].x << ", " << WallPoints[i+1].y << endl;
-				if (WallPoints[i].x == WallPoints[i + 1].x)
-				{
-					for (int j = 0; j <= WallPoints[i].y; j++)
-					{
-						WallCoordinates.push_back(Point(WallPoints[i].x, j));
-					}
+		void CalculatePointsOnLine(const Point& startPoint, const Point& endPoint) {
+			if (startPoint.x == endPoint.x) {
+				// Vertical line
+				float minY = std::min(startPoint.y, endPoint.y);
+				float maxY = std::max(startPoint.y, endPoint.y);
+				for (float y = minY; y <= maxY; y++) {
+					WallCoordinates.push_back(Point(startPoint.x, y));
 				}
-				if (WallPoints[i].y == WallPoints[i + 1].y)
-				{
-					for (int j = 0; j <= WallPoints[i].x; j++)
-					{
-						WallCoordinates.push_back(Point(j, WallPoints[i].y));
-					}
+			}
+			else if (startPoint.y == endPoint.y) {
+				// Horizontal line
+				float minX = std::min(startPoint.x, endPoint.x);
+				float maxX = std::max(startPoint.x, endPoint.x);
+				for (float x = minX; x <= maxX; x++) {
+					WallCoordinates.push_back(Point(x, startPoint.y));
 				}
-				else
-				{
-					Point TempDif;
-					
-					TempDif.x = WallPoints[i].x - WallPoints[i + 1].x;
-					TempDif.y = WallPoints[i].y - WallPoints[i + 1].y;
+			}
+			else {
+				// Calculate the slope (m) of the line
+				float m = (endPoint.y - startPoint.y) / (endPoint.x - startPoint.x);
 
-					Point Add;
+				// Calculate the y-intercept (b) of the line
+				float b = startPoint.y - m * startPoint.x;
 
-					if (WallPoints[i].x < WallPoints[i + 1].x)
-					{
-						if (WallPoints[i].y < WallPoints[i + 1].y)
-						{
-							Add.x = 0;
-							Add.y = 0;
-						}
-						else
-						{
-							Add.x = 0;
-							Add.y = 1;
-						}
-					}
-					else
-					{
-						if (WallPoints[i].y < WallPoints[i + 1].y)
-						{
-							Add.x = 1;
-							Add.y = 0;
-						}
-						else
-						{
-							Add.x = 1;
-							Add.y = 1;
-						}
-					}
+				// Determine the range of x-values
+				float minX = std::min(startPoint.x, endPoint.x);
+				float maxX = std::max(startPoint.x, endPoint.x);
 
-					if (TempDif.x < 0)
-					{
-						TempDif.x = -TempDif.x;
-					}
-					if (TempDif.y < 0)
-					{
-						TempDif.y = -TempDif.y;
-					}
-
-					int j = 0;
-					for (float i = 0; i < TempDif.x; i += (TempDif.x / TempDif.y))
-					{
-						WallCoordinates.push_back(Point(WallPoints[j + Add.x].x + i, WallPoints[j + Add.y].y + i));
-						j++;
-					}
+				// Iterate through x-values and calculate corresponding y-values
+				for (float x = minX; x <= maxX; x++) {
+					float y = m * x + b;
+					WallCoordinates.push_back({ x, y });
 				}
+			}
+		}
 
+
+		void WallCollisionInit() {
+			WallCoordinates.clear(); // Clear existing coordinates
+			for (size_t i = 0; i < WallPoints.size(); i += 2) {
+				CalculatePointsOnLine(WallPoints[i], WallPoints[i + 1]);
 			}
 		}
 

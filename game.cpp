@@ -24,14 +24,16 @@ namespace Tmpl8
 		IdleAnim.init(8, "assets/Wizard-Frames/idle_frame_", 0, 512 - 104, screen);
 
 		LM.init();
-		LM.WallColissionInit();
+		LM.WallCollisionInit();
+
 		EnemyCoordinates = LM.ReturnEnemyCoordinates();
 		WallCoordinates = LM.ReturnWallCoordinates();
 
-		for (int i = 0; i < WallCoordinates.size(); i++)
-		{
-			// cout << WallCoordinates[i].x << ", " << WallCoordinates[i].y << endl;
+		// Print the calculated points
+		for (const Point& point : WallCoordinates) {
+			std::cout << "(" << point.x << ", " << point.y << ")k";
 		}
+
 
 		for (int i = 0; i < EnemyCoordinates.size(); i++)
 		{
