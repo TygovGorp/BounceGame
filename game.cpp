@@ -29,11 +29,6 @@ namespace Tmpl8
 		EnemyCoordinates = LM.ReturnEnemyCoordinates();
 		WallCoordinates = LM.ReturnWallCoordinates();
 
-		// Print the calculated points
-		for (const Point& point : WallCoordinates) {
-			std::cout << "(" << point.x << ", " << point.y << ")k";
-		}
-
 
 		for (int i = 0; i < EnemyCoordinates.size(); i++)
 		{

@@ -104,9 +104,9 @@ namespace Tmpl8
 				for (int i = 0; i < WallCoordinates.size(); i++)
 				{
 					
-					for (int j = 0; j < 4; j++)
+					for (int j = 0; j < 3; j++)
 					{
-						if (WallCoordinates[i].x == BulletCollider[j - 1].x && WallCoordinates[i].y == BulletCollider[j - 1].y)
+						if (WallCoordinates[i].x == BulletCollider[j].x && WallCoordinates[i].y == BulletCollider[j].y)
 						{
 							cout << "hit" << endl;
 							switch (j)
