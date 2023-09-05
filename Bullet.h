@@ -19,7 +19,7 @@ namespace Tmpl8
 		float bulletDY = 0;
 		bool bulletFired = false;
 
-		Point BulletCollider[4]; // 0=front 1=back 2=top 4=bottom
+		Point BulletCollider[4]; // 0=TopLeft 1=TopRight 2=BottomLeft 3=BottomRight
 
 		SDL_Rect BulletRect;
 
@@ -27,23 +27,23 @@ namespace Tmpl8
 
 		void SetColliderDetectors()
 		{
-			BulletCollider[0].x = BulletLoc.x + BulletRect.w;
-			BulletCollider[0].y = BulletLoc.y + (BulletRect.h / 2);
-
-			BulletCollider[1].x = BulletLoc.x;
-			BulletCollider[1].y = BulletLoc.y + (BulletRect.h / 2);
-
-			BulletCollider[2].x = BulletLoc.x + (BulletRect.w / 2);
-			BulletCollider[2].y = BulletLoc.y;
-
-			BulletCollider[3].x = BulletLoc.x + (BulletRect.w / 2);
-			BulletCollider[3].y = BulletLoc.y + BulletRect.h;
+			BulletCollider[0].x = round(BulletLoc.x);
+			BulletCollider[0].y = round(BulletLoc.y);
+													
+			BulletCollider[1].x = round(BulletLoc.x) + BulletRect.w;
+			BulletCollider[1].y = round(BulletLoc.y);
+													
+			BulletCollider[2].x = round(BulletLoc.x);
+			BulletCollider[2].y = round(BulletLoc.y) - BulletRect.h;
+													
+			BulletCollider[3].x = round(BulletLoc.x) + BulletRect.w;
+			BulletCollider[3].y = round(BulletLoc.y) - BulletRect.h;
 		}
 
 	public:
 		Bullet() {
-			BulletRect.h = 36;
-			BulletRect.w = 86;
+			BulletRect.h = 104;
+			BulletRect.w = 104;
 			BulletLoc.x = 0;
 			BulletLoc.y = 512 - 60;
 		}
@@ -82,11 +82,13 @@ namespace Tmpl8
 				BulletLoc.y += bulletDY * 4;
 
 				// Check if the bullet is out of bounds
-				if (BulletLoc.x < -128 || BulletLoc.x >= SCREEN_WIDTH || BulletLoc.y < -128 || BulletLoc.y >= SCREEN_HEIGHT)
+				if (BulletLoc.x < 0 || BulletLoc.x >= SCREEN_WIDTH)
 				{
-					BulletLoc.x = 0;
-					BulletLoc.y = 512 - 60;
-					bulletFired = false;
+					InvertDX();
+				}
+				if (BulletLoc.y < 0 || BulletLoc.y >= SCREEN_HEIGHT)
+				{
+					InvertDY();
 				}
 			}
 			if (bulletFired) //in seperate if function because of despawning when out of bouds of the screen
@@ -101,36 +103,63 @@ namespace Tmpl8
 		{
 			if (bulletFired)
 			{
-				for (int i = 0; i < WallCoordinates.size(); i++)
+				// Calculate the front, back, top, and bottom positions of the bullet.
+				float bulletFront = BulletLoc.x;
+				float bulletBack = BulletLoc.x + BulletRect.w;
+				float bulletTop = BulletLoc.y;
+				float bulletBottom = BulletLoc.y - BulletRect.h;
+
+				for (const Point& wall : WallCoordinates)
 				{
-					
-					for (int j = 0; j < 3; j++)
+					// Check if the bullet collides with the wall.
+					if (bulletFront <= wall.x && bulletBack >= wall.x &&
+						bulletTop >= wall.y && bulletBottom <= wall.y)
 					{
-						if (WallCoordinates[i].x == BulletCollider[j].x && WallCoordinates[i].y == BulletCollider[j].y)
+						// Bullet hit the wall; now, determine the collision direction.
+
+						// Calculate the horizontal and vertical overlap with the wall.
+						float horizontalOverlap = std::min(bulletBack, wall.x) - std::max(bulletFront, wall.x);
+						float verticalOverlap = std::min(bulletTop, wall.y) - std::max(bulletBottom, wall.y);
+
+						// Determine the collision direction based on overlap.
+						if (horizontalOverlap > verticalOverlap)
 						{
-							cout << "hit" << endl;
-							switch (j)
+							// Horizontal collision, check if it's front or back.
+							if (bulletFront < wall.x)
 							{
-							case 1:
-								InvertDX();
-								break;
-							case 2:
-								InvertDX();
-								break;
-							case 3:
-								InvertDY();
-								break;
-							case 4:
-								InvertDY();
-								break;
-							default:
-								break;
+								cout << "Bullet hit the front of the wall." << endl;
+								InvertDX(); // Invert the horizontal direction.
+							}
+							else
+							{
+								cout << "Bullet hit the back of the wall." << endl;
+								InvertDX(); // Invert the horizontal direction.
 							}
 						}
+						else
+						{
+							// Vertical collision, check if it's top or bottom.
+							if (bulletTop > wall.y)
+							{
+								cout << "Bullet hit the top of the wall." << endl;
+								InvertDY(); // Invert the vertical direction.
+							}
+							else
+							{
+								cout << "Bullet hit the bottom of the wall." << endl;
+								InvertDY(); // Invert the vertical direction.
+							}
+						}
+
+						// You can add any other necessary actions here.
+
+						break; // Exit the loop after detecting the first collision.
 					}
 				}
 			}
 		}
+
+
 
 		void InvertDY()
 		{
