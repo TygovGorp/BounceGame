@@ -42,8 +42,8 @@ namespace Tmpl8
 
 	public:
 		Bullet() {
-			BulletRect.h = 104;
-			BulletRect.w = 104;
+			BulletRect.h = 36;
+			BulletRect.w = 86;
 			BulletLoc.x = 0;
 			BulletLoc.y = 512 - 60;
 		}
@@ -103,35 +103,56 @@ namespace Tmpl8
 		{
 			if (bulletFired)
 			{
+				// Calculate the half-width and half-height of the bullet.
+				float bulletHalfWidth = BulletRect.w / 2;
+				float bulletHalfHeight = BulletRect.h / 2;
+
+				// Calculate the center and boundaries of the bullet's collision box.
+				Point bulletCenter(BulletLoc.x + bulletHalfWidth, BulletLoc.y - bulletHalfHeight);
+
+				Point bulletLeft(bulletCenter.x - bulletHalfWidth, bulletCenter.y);
+				Point bulletRight(bulletCenter.x + bulletHalfWidth, bulletCenter.y);
+				Point bulletTop(bulletCenter.x, bulletCenter.y + bulletHalfHeight);
+				Point bulletBottom(bulletCenter.x, bulletCenter.y - bulletHalfHeight);
+
 				for (const Point& wallPoint : WallCoordinates)
 				{
-					// Calculate the distance between the bullet and the wall point.
-					float distance = sqrt((BulletLoc.x - wallPoint.x) * (BulletLoc.x - wallPoint.x) +
-						(BulletLoc.y - wallPoint.y) * (BulletLoc.y - wallPoint.y));
-
-					// Check if the bullet is within one pixel distance of the wall point.
-					if (distance <= 1.0f)
+					// Check if the bullet's collision box intersects with the wall point.
+					if (bulletRight.x >= wallPoint.x && bulletLeft.x <= wallPoint.x &&
+						bulletTop.y >= wallPoint.y && bulletBottom.y <= wallPoint.y)
 					{
 						// Determine the collision direction based on the relative positions.
-						if (BulletLoc.x < wallPoint.x)
+						if (bulletCenter.x < wallPoint.x)
 						{
 							cout << "Bullet hit the front of the wall." << endl;
-							InvertDX(); // Invert the horizontal direction.
+							if (bulletDX > 0)
+							{
+								InvertDX(); // Invert the horizontal direction.
+							}
 						}
-						else if (BulletLoc.x > wallPoint.x)
+						else if (bulletCenter.x > wallPoint.x)
 						{
 							cout << "Bullet hit the back of the wall." << endl;
-							InvertDX(); // Invert the horizontal direction.
+							if (bulletDX < 0)
+							{
+								InvertDX(); // Invert the horizontal direction.
+							}
 						}
-						if (BulletLoc.y > wallPoint.y)
+						else if (bulletCenter.y > wallPoint.y)
 						{
 							cout << "Bullet hit the top of the wall." << endl;
-							InvertDY(); // Invert the vertical direction.
+							if (bulletDY > 0)
+							{
+								InvertDY(); // Invert the vertical direction.
+							}
 						}
-						else if (BulletLoc.y < wallPoint.y)
+						else if (bulletCenter.y < wallPoint.y)
 						{
 							cout << "Bullet hit the bottom of the wall." << endl;
-							InvertDY(); // Invert the vertical direction.
+							if (bulletDY < 0)
+							{
+								InvertDY(); // Invert the vertical direction.
+							}
 						}
 
 						// You can add any other necessary actions here.
@@ -143,6 +164,9 @@ namespace Tmpl8
 				}
 			}
 		}
+
+
+
 
 
 

@@ -37,6 +37,7 @@ namespace Tmpl8
 		{
 			int currentFrame = FrameCounter / frameLength % NumOfFrames;
 			Frames[currentFrame].DrawScaled(Xlocation, Ylocation, 104, 104, Screen);
+			Frames[currentFrame].
 		}
 
 		char* StrToCharStar(char* filename, int i)
@@ -46,6 +47,11 @@ namespace Tmpl8
 			std::strcpy(charPtr, FileNameString.c_str());
 			return charPtr;
 			delete[] charPtr;
+		}
+
+		void FlipImageHorizontal()
+		{
+
 		}
 	};
 }
