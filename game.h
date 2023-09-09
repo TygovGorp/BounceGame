@@ -53,6 +53,7 @@ namespace Tmpl8 {
 			switch (key)
 			{
 			case 43: //tab
+				BulletObject.Respawn();
 				break;
 			case 82: //arrow up
 				break;

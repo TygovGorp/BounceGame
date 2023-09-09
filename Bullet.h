@@ -25,29 +25,20 @@ namespace Tmpl8
 
 		Point BulletLoc;
 
-		void SetColliderDetectors()
-		{
-			BulletCollider[0].x = round(BulletLoc.x);
-			BulletCollider[0].y = round(BulletLoc.y);
-													
-			BulletCollider[1].x = round(BulletLoc.x) + BulletRect.w;
-			BulletCollider[1].y = round(BulletLoc.y);
-													
-			BulletCollider[2].x = round(BulletLoc.x);
-			BulletCollider[2].y = round(BulletLoc.y) - BulletRect.h;
-													
-			BulletCollider[3].x = round(BulletLoc.x) + BulletRect.w;
-			BulletCollider[3].y = round(BulletLoc.y) - BulletRect.h;
-		}
-
 	public:
 		Bullet() {
-			BulletRect.h = 36;
+			BulletRect.h = 20;
 			BulletRect.w = 86;
 			BulletLoc.x = 0;
 			BulletLoc.y = 512 - 60;
 		}
 		Sprite bullet;
+
+		void ResetLoc()
+		{
+			BulletLoc.x = 0;
+			BulletLoc.y = 512 - 60;
+		}
 
 		void Schoot(int MouseX, int MouseY)
 		{
@@ -86,7 +77,7 @@ namespace Tmpl8
 				{
 					InvertDX();
 				}
-				if (BulletLoc.y < 0 || BulletLoc.y >= SCREEN_HEIGHT)
+				if (BulletLoc.y < 0 || BulletLoc.y >= SCREEN_HEIGHT - 36)
 				{
 					InvertDY();
 				}
@@ -95,7 +86,6 @@ namespace Tmpl8
 			{
 				// Draw bullet
 				bullet.Draw(screen, BulletLoc.x, BulletLoc.y);
-				SetColliderDetectors();
 			}
 		}
 
@@ -122,53 +112,20 @@ namespace Tmpl8
 						bulletTop.y >= wallPoint.y && bulletBottom.y <= wallPoint.y)
 					{
 						// Determine the collision direction based on the relative positions.
-						if (bulletCenter.x < wallPoint.x)
+						if (bulletCenter.x != wallPoint.x)
 						{
-							cout << "Bullet hit the front of the wall." << endl;
-							if (bulletDX > 0)
-							{
-								InvertDX(); // Invert the horizontal direction.
-							}
+							cout << "hit front or back" << endl;
+							InvertDX();
 						}
-						else if (bulletCenter.x > wallPoint.x)
+						if (bulletCenter.y != wallPoint.y)
 						{
-							cout << "Bullet hit the back of the wall." << endl;
-							if (bulletDX < 0)
-							{
-								InvertDX(); // Invert the horizontal direction.
-							}
+							cout << "top or bottom" << endl;
+							InvertDY();
 						}
-						else if (bulletCenter.y > wallPoint.y)
-						{
-							cout << "Bullet hit the top of the wall." << endl;
-							if (bulletDY > 0)
-							{
-								InvertDY(); // Invert the vertical direction.
-							}
-						}
-						else if (bulletCenter.y < wallPoint.y)
-						{
-							cout << "Bullet hit the bottom of the wall." << endl;
-							if (bulletDY < 0)
-							{
-								InvertDY(); // Invert the vertical direction.
-							}
-						}
-
-						// You can add any other necessary actions here.
-
-						// Do not set bulletFired to false.
-
-						return; // Exit the function after detecting the collision.
 					}
 				}
 			}
 		}
-
-
-
-
-
 
 		void InvertDY()
 		{
@@ -190,6 +147,11 @@ namespace Tmpl8
 		float GetBulletY()
 		{
 			return BulletLoc.y;
+		}
+		void Respawn()
+		{
+			bulletFired = false;
+			ResetLoc();
 		}
 	};
 };
