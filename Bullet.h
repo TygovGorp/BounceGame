@@ -111,15 +111,51 @@ namespace Tmpl8
 					if (bulletRight.x >= wallPoint.x && bulletLeft.x <= wallPoint.x &&
 						bulletTop.y >= wallPoint.y && bulletBottom.y <= wallPoint.y)
 					{
+						bool frontCollision = false;
+						bool backCollision = false;
+						bool topCollision = false;
+						bool bottomCollision = false;
+
 						// Determine the collision direction based on the relative positions.
-						if (bulletCenter.x != wallPoint.x)
+						if (bulletCenter.x > wallPoint.x || !backCollision)
 						{
-							cout << "hit front or back" << endl;
+							backCollision = true;
+							cout << "back ";
+						}
+						if (bulletCenter.x < wallPoint.x || !frontCollision)
+						{
+							frontCollision = true;
+							cout << "front ";
+						}
+						if (bulletCenter.y > wallPoint.y || !topCollision)
+						{
+							topCollision = true;
+							cout << "top ";
+						}
+						if (bulletCenter.y < wallPoint.y || !bottomCollision)
+						{
+							bottomCollision = true;
+							cout << "bottom ";
+						}
+
+						if (backCollision == true && topCollision == true && bottomCollision == true)
+						{
+							cout << "hit back" << endl;
 							InvertDX();
 						}
-						if (bulletCenter.y != wallPoint.y)
+						if (frontCollision == true && topCollision == true && bottomCollision == true)
 						{
-							cout << "top or bottom" << endl;
+							cout << "hit front" << endl;
+							InvertDX();
+						}
+						if (topCollision == true && frontCollision == true && backCollision == true)
+						{
+							cout << "hit top" << endl;
+							InvertDY();
+						}
+						if (bottomCollision == true && frontCollision == true && backCollision == true)
+						{
+							cout << "hit bottom" << endl;
 							InvertDY();
 						}
 					}
