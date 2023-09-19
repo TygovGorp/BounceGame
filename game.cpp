@@ -62,7 +62,7 @@ namespace Tmpl8
 			EnemyVec[i].GotShot(AABB(BulletObject.GetBulletX(), BulletObject.GetBulletY(), EnemyVec[i].GetEnemyRect()));
 		}
 		
-		BulletObject.WallCollision(WallCoordinates);
+		BulletObject.CheckWallCollision(WallCoordinates);
 
 	}
 };

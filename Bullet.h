@@ -9,6 +9,11 @@
 using namespace std;
 namespace Tmpl8
 {
+	struct Rectangle {
+		float x, y; // Position of the top-left corner of the rectangle
+		float width, height; // Width and height of the rectangle
+	};
+
 	class Bullet
 	{
 	private:
@@ -21,23 +26,21 @@ namespace Tmpl8
 
 		Point BulletCollider[4]; // 0=TopLeft 1=TopRight 2=BottomLeft 3=BottomRight
 
-		SDL_Rect BulletRect;
-
-		Point BulletLoc;
+		Rectangle BulletRect;
 
 	public:
 		Bullet() {
-			BulletRect.h = 20;
-			BulletRect.w = 86;
-			BulletLoc.x = 0;
-			BulletLoc.y = 512 - 60;
+			BulletRect.height = 32;
+			BulletRect.width = 86;
+			BulletRect.x = 0;
+			BulletRect.y = 512 - 60;
 		}
 		Sprite bullet;
 
 		void ResetLoc()
 		{
-			BulletLoc.x = 0;
-			BulletLoc.y = 512 - 60;
+			BulletRect.x = 0;
+			BulletRect.y = 512 - 60;
 		}
 
 		void Schoot(int MouseX, int MouseY)
@@ -46,8 +49,8 @@ namespace Tmpl8
 			{
 				bullet.Build(new Surface("assets/magic_missile.png"), 1);
 
-				bulletDX = MouseX - BulletLoc.x; // Calculate the direction vector components
-				bulletDY = MouseY - BulletLoc.y;
+				bulletDX = MouseX - BulletRect.x; // Calculate the direction vector components
+				bulletDY = MouseY - BulletRect.y;
 
 				// Calculate the magnitude of the movement vector
 				double magnitude = sqrt(bulletDX * bulletDX + bulletDY * bulletDY);
@@ -69,15 +72,15 @@ namespace Tmpl8
 		{
 			if (bulletFired)
 			{
-				BulletLoc.x += bulletDX * 4;
-				BulletLoc.y += bulletDY * 4;
+				BulletRect.x += bulletDX * 4;
+				BulletRect.y += bulletDY * 4;
 
 				// Check if the bullet is out of bounds
-				if (BulletLoc.x < 0 || BulletLoc.x >= SCREEN_WIDTH)
+				if (BulletRect.x < 0 || BulletRect.x >= SCREEN_WIDTH)
 				{
 					InvertDX();
 				}
-				if (BulletLoc.y < 0 || BulletLoc.y >= SCREEN_HEIGHT - 36)
+				if (BulletRect.y < 0 || BulletRect.y >= SCREEN_HEIGHT - 36)
 				{
 					InvertDY();
 				}
@@ -85,82 +88,28 @@ namespace Tmpl8
 			if (bulletFired) //in seperate if function because of despawning when out of bouds of the screen
 			{
 				// Draw bullet
-				bullet.Draw(screen, BulletLoc.x, BulletLoc.y);
+				bullet.Draw(screen, BulletRect.x, BulletRect.y);
 			}
 		}
 
-		void WallCollision(vector<Point> WallCoordinates)
-		{
-			if (bulletFired)
-			{
-				// Calculate the half-width and half-height of the bullet.
-				float bulletHalfWidth = BulletRect.w / 2;
-				float bulletHalfHeight = BulletRect.h / 2;
-
-				// Calculate the center and boundaries of the bullet's collision box.
-				Point bulletCenter(BulletLoc.x + bulletHalfWidth, BulletLoc.y - bulletHalfHeight);
-
-				Point bulletLeft(bulletCenter.x - bulletHalfWidth, bulletCenter.y);
-				Point bulletRight(bulletCenter.x + bulletHalfWidth, bulletCenter.y);
-				Point bulletTop(bulletCenter.x, bulletCenter.y + bulletHalfHeight);
-				Point bulletBottom(bulletCenter.x, bulletCenter.y - bulletHalfHeight);
-
-				for (const Point& wallPoint : WallCoordinates)
-				{
-					// Check if the bullet's collision box intersects with the wall point.
-					if (bulletRight.x >= wallPoint.x && bulletLeft.x <= wallPoint.x &&
-						bulletTop.y >= wallPoint.y && bulletBottom.y <= wallPoint.y)
-					{
-						bool frontCollision = false;
-						bool backCollision = false;
-						bool topCollision = false;
-						bool bottomCollision = false;
-
-						// Determine the collision direction based on the relative positions.
-						if (bulletCenter.x > wallPoint.x || !backCollision)
-						{
-							backCollision = true;
-							cout << "back ";
-						}
-						if (bulletCenter.x < wallPoint.x || !frontCollision)
-						{
-							frontCollision = true;
-							cout << "front ";
-						}
-						if (bulletCenter.y > wallPoint.y || !topCollision)
-						{
-							topCollision = true;
-							cout << "top ";
-						}
-						if (bulletCenter.y < wallPoint.y || !bottomCollision)
-						{
-							bottomCollision = true;
-							cout << "bottom ";
-						}
-
-						if (backCollision == true && topCollision == true && bottomCollision == true)
-						{
-							cout << "hit back" << endl;
-							InvertDX();
-						}
-						if (frontCollision == true && topCollision == true && bottomCollision == true)
-						{
-							cout << "hit front" << endl;
-							InvertDX();
-						}
-						if (topCollision == true && frontCollision == true && backCollision == true)
-						{
-							cout << "hit top" << endl;
-							InvertDY();
-						}
-						if (bottomCollision == true && frontCollision == true && backCollision == true)
-						{
-							cout << "hit bottom" << endl;
-							InvertDY();
-						}
-					}
+		// Function to check collision with a one-pixel thick wall and determine collision side
+		void CheckWallCollision( std::vector<Point> WallCoordinates) {
+			for (const Point& wallPoint : WallCoordinates) {
+				if (BulletRect.x < wallPoint.x && BulletRect.x + BulletRect.width > wallPoint.x &&
+					BulletRect.y < wallPoint.y && BulletRect.y + BulletRect.height > wallPoint.y) {
+					// Collision detected with a wall point
+					Point bulletCenter(BulletRect.x + (BulletRect.width / 2), BulletRect.y + (BulletRect.height / 2));
+					if (bulletCenter.x < wallPoint.x)
+						InvertDX();
+					else if (bulletCenter.x > wallPoint.x)
+						InvertDX();
+					if (bulletCenter.y < wallPoint.y)
+						InvertDY();
+					else if (bulletCenter.y > wallPoint.y)
+						InvertDY();
 				}
 			}
+			return; // No collision detected
 		}
 
 		void InvertDY()
@@ -172,17 +121,17 @@ namespace Tmpl8
 			bulletDX = -bulletDX;
 		}
 
-		SDL_Rect GetBulletRect()
+		Rectangle GetBulletRect()
 		{
 			return BulletRect;
 		}
 		float GetBulletX()
 		{
-			return BulletLoc.x;
+			return BulletRect.x;
 		}
 		float GetBulletY()
 		{
-			return BulletLoc.y;
+			return BulletRect.y;
 		}
 		void Respawn()
 		{
