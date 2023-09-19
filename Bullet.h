@@ -24,8 +24,6 @@ namespace Tmpl8
 		float bulletDY = 0;
 		bool bulletFired = false;
 
-		Point BulletCollider[4]; // 0=TopLeft 1=TopRight 2=BottomLeft 3=BottomRight
-
 		Rectangle BulletRect;
 
 	public:
@@ -92,24 +90,9 @@ namespace Tmpl8
 			}
 		}
 
-		// Function to check collision with a one-pixel thick wall and determine collision side
-		void CheckWallCollision( std::vector<Point> WallCoordinates) {
-			for (const Point& wallPoint : WallCoordinates) {
-				if (BulletRect.x < wallPoint.x && BulletRect.x + BulletRect.width > wallPoint.x &&
-					BulletRect.y < wallPoint.y && BulletRect.y + BulletRect.height > wallPoint.y) {
-					// Collision detected with a wall point
-					Point bulletCenter(BulletRect.x + (BulletRect.width / 2), BulletRect.y + (BulletRect.height / 2));
-					if (bulletCenter.x < wallPoint.x)
-						InvertDX();
-					else if (bulletCenter.x > wallPoint.x)
-						InvertDX();
-					if (bulletCenter.y < wallPoint.y)
-						InvertDY();
-					else if (bulletCenter.y > wallPoint.y)
-						InvertDY();
-				}
-			}
-			return; // No collision detected
+		void CheckWallCollision(std::vector<Point> WallCoordinates)
+		{
+			//TO DO
 		}
 
 		void InvertDY()
