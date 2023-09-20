@@ -84,42 +84,33 @@ namespace Tmpl8
 			}
 		}
 
-		void CalculatePointsOnLine(const Point& startPoint, const Point& endPoint) {
-			//if (startPoint.x == endPoint.x) {
-			//	// Vertical line
-			//	float minY = std::min(startPoint.y, endPoint.y);
-			//	float maxY = std::max(startPoint.y, endPoint.y);
-			//	for (float y = minY; y <= maxY; y++) {
-			//		WallCoordinates.push_back(Point(startPoint.x, y));
-			//	}
-			//}
-			//else if (startPoint.y == endPoint.y) {
-			//	// Horizontal line
-			//	float minX = std::min(startPoint.x, endPoint.x);
-			//	float maxX = std::max(startPoint.x, endPoint.x);
-			//	for (float x = minX; x <= maxX; x++) {
-			//		WallCoordinates.push_back(Point(x, startPoint.y));
-			//	}
-			//}
-			//else {
-			//	// Calculate the slope (m) of the line
-			//	float m = (endPoint.y - startPoint.y) / (endPoint.x - startPoint.x);
+		void CalculatePointsOnLine(const Point& A, const Point& C) {
 
-			//	// Calculate the y-intercept (b) of the line
-			//	float b = startPoint.y - m * startPoint.x;
+			Point B(C.x, A.y);
+			Point D(A.x, C.y);
 
-			//	// Determine the range of x-values
-			//	float minX = std::min(startPoint.x, endPoint.x);
-			//	float maxX = std::max(startPoint.x, endPoint.x);
-
-			//	// Iterate through x-values and calculate corresponding y-values
-			//	for (float x = minX; x <= maxX; x++) {
-			//		float y = m * x + b;
-			//		WallCoordinates.push_back({ x, y });
-			//	}
-			//}
+			for (int i = 1; i <= 4; i++)
+			{
+				switch (i)
+				{
+				case 1:
+					for (int i = A.x; i < B.x; i++)
+					{
+						WallCoordinates.push_back(Point(i, A.y));
+						WallCoordinates.push_back(Point(i, D.y));
+					}
+					break;
+				case 2:
+					for (int i = B.y; i < C.y; i++)
+					{
+						WallCoordinates.push_back(Point(B.x, i));
+						WallCoordinates.push_back(Point(A.x, i));
+					}
+					break;
+				}
+				
+			}
 		}
-
 
 		void WallCollisionInit() {
 			WallCoordinates.clear(); // Clear existing coordinates
