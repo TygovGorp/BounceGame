@@ -9,7 +9,19 @@ namespace Tmpl8
 	vector<Point> EnemyCoordinates;
 	vector<Point> WallCoordinates;
 
-
+	bool AABB(int Ax, int Ay, int Aw, int Ah, int Bx, int By, int Bw, int Bh)
+	{
+		if (
+			Ax + Aw >= Bx &&
+			Bx + Bw >= Ax &&
+			Ay + Ah >= By &&
+			By + Bh >= Ay
+			)
+		{
+			return true;
+		}
+		return false;
+	}
 
 	// -----------------------------------------------------------
 	// Initialize the application

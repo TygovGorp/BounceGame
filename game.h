@@ -67,49 +67,7 @@ namespace Tmpl8 {
 				break;
 			}
 		}
-		bool AABB(const SDL_Rect& recA, const SDL_Rect& recB)
-		{
-			if (
-				recA.x + recA.w >= recB.x &&
-				recB.x + recB.w >= recA.x &&
-				recA.y + recA.h >= recB.y &&
-				recB.y + recB.h >= recA.y
-				)
-			{
-				return true;
-			}
-			return false;
-		}
-		bool AABB(int x, int y, const SDL_Rect& recB)
-		{
-			int w = 1;
-			int h = 1;
-			if (
-				x + w >= recB.x &&
-				recB.x + recB.w >= x &&
-				y + h >= recB.y &&
-				recB.y + recB.h >= y
-				)
-			{
-				return true;
-			}
-			return false;
-		}
-		bool AABB(int Ax, int Ay, int Bx, int By)
-		{
-			int w = 1;
-			int h = 1;
-			if (
-				Ax + w >= Bx &&
-				Bx + w >= Ax &&
-				Ay + h >= By &&
-				By + h >= Ay
-				)
-			{
-				return true;
-			}
-			return false;
-		}
+
 		bool AABB(int Ax, int Ay, int Aw, int Ah, int Bx, int By, int Bw, int Bh)
 		{
 			if (

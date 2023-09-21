@@ -92,7 +92,28 @@ namespace Tmpl8
 
 		void CheckWallCollision(std::vector<Point> WallCoordinates)
 		{
-			//TO DO
+			for (int i = 0; i < WallCoordinates.size(); i += 2)
+			{
+				for (int j = 1; j <= 4; j++)
+				{
+					switch (j)
+					{
+					case 1:
+						if (AABB(WallCoordinates[i].x, WallCoordinates[i].x, ))
+						{
+
+						}
+						break;
+					case 2:
+						break;
+					case 3:
+						break;
+					case 4:
+						break;
+					}
+				}
+			}
+
 		}
 
 		void InvertDY()
