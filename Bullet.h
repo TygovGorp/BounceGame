@@ -4,12 +4,14 @@
 #include <SDL.h>
 #include "game.h"
 #include "surface.h"
+#include "AABBCollisionClass.h"
 #include "Point.h"
 
 using namespace std;
 namespace Tmpl8
 {
-	struct Rectangle {
+	struct Rectangle 
+	{
 		float x, y; // Position of the top-left corner of the rectangle
 		float width, height; // Width and height of the rectangle
 	};
@@ -92,26 +94,87 @@ namespace Tmpl8
 
 		void CheckWallCollision(std::vector<Point> WallCoordinates)
 		{
+			AABBCollisionClass collision;
 			for (int i = 0; i < WallCoordinates.size(); i += 2)
 			{
+				bool TopLeftHit = false;
+				bool TopRightHit = false;
+				bool BottomLeftHit = false;
+				bool BottomRightHit = false;
+				bool TwoSpotHit = false;
 				for (int j = 1; j <= 4; j++)
 				{
+					
+					Rectangle Wall;
+					Wall.x = WallCoordinates[i].x;
+					Wall.y = WallCoordinates[i].y;
+					Wall.width = WallCoordinates[i + 1].x - WallCoordinates[i].x;
+					Wall.height = WallCoordinates[i + 1].y - WallCoordinates[i].y;
+					// 1: topleft
+					// 2: topright
+					// 3: bottomleft
+					// 4: bottom right
 					switch (j)
 					{
 					case 1:
-						if (AABB(WallCoordinates[i].x, WallCoordinates[i].x, ))
+						if (collision.AABB(BulletRect.x, BulletRect.y, BulletRect.width / 2, BulletRect.height / 2, Wall.x, Wall.y, Wall.height, Wall.height))
 						{
-
+							TopLeftHit = true;
 						}
 						break;
 					case 2:
+						if (collision.AABB(BulletRect.x + BulletRect.width / 2, BulletRect.y, BulletRect.width / 2, BulletRect.height / 2, Wall.x, Wall.y, Wall.height, Wall.height))
+						{
+							TopRightHit = true;
+						}
 						break;
 					case 3:
+						if (collision.AABB(BulletRect.x, BulletRect.y + BulletRect.height / 2, BulletRect.width / 2, BulletRect.height / 2, Wall.x, Wall.y, Wall.height, Wall.height))
+						{
+							BottomLeftHit = true;
+						}
 						break;
 					case 4:
+						if (collision.AABB(BulletRect.x + BulletRect.width / 2, BulletRect.y + BulletRect.height / 2, BulletRect.width / 2, BulletRect.height / 2, Wall.x, Wall.y, Wall.height, Wall.height))
+						{
+							BottomRightHit = true;
+						}
 						break;
 					}
 				}
+
+				if (TopRightHit && BottomRightHit)
+				{
+					cout << "front hit" << endl;
+					TwoSpotHit = true;
+					InvertDX();
+				}
+				else if (TopLeftHit && BottomLeftHit)
+				{
+					cout << "back hit" << endl;
+					TwoSpotHit = true;
+					InvertDX();
+				}
+
+				if (TopLeftHit && TopRightHit)
+				{
+					cout << "top hit" << endl;
+					TwoSpotHit = true;
+					InvertDY();
+				}
+				else if (BottomLeftHit && BottomRightHit)
+				{
+					cout << "bottom hit" << endl;
+					TwoSpotHit = true;
+					InvertDY();
+				}
+
+				if (!TwoSpotHit)
+				{
+					InvertDX();
+					InvertDY();
+				}
+				
 			}
 
 		}

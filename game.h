@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include "LevelManager.h"
 #include "Point.h"
+#include "AABBCollisionClass.h"
 
 //using namespace std;
 
@@ -66,20 +67,6 @@ namespace Tmpl8 {
 			default:
 				break;
 			}
-		}
-
-		bool AABB(int Ax, int Ay, int Aw, int Ah, int Bx, int By, int Bw, int Bh)
-		{
-			if (
-				Ax + Aw >= Bx &&
-				Bx + Bw >= Ax &&
-				Ay + Ah >= By &&
-				By + Bh >= Ay
-				)
-			{
-				return true;
-			}
-			return false;
 		}
 
 		static SDL_Renderer* renderer;
