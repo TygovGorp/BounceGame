@@ -1,5 +1,6 @@
 #include "game.h"
 #include "surface.h"
+#include <algorithm>
 
 
 namespace Tmpl8
@@ -23,8 +24,7 @@ namespace Tmpl8
 		//setup IdleAnimation frames for animation in a array
 		IdleAnim.init(8, "assets/Wizard-Frames/idle_frame_", 0, 512 - 104, screen);
 
-		LM.init();
-		LM.WallCollisionInit();
+		LM.init(LevelNumber);
 
 		EnemyCoordinates = LM.ReturnEnemyCoordinates();
 		WallPoints = LM.ReturnWallPoints();
@@ -46,7 +46,6 @@ namespace Tmpl8
 		screen->Clear(0);
 	}
 
-
 	int Framecounter = 0;
 	void Game::Tick(float deltaTime)
 	{
@@ -61,6 +60,19 @@ namespace Tmpl8
 		{
 			EnemyVec[i].Update();
 			EnemyVec[i].GotShot(AABBColClass.AABB(BulletObject.GetBulletX(), BulletObject.GetBulletY(), EnemyVec[i].GetEnemyRect()));
+		}
+		int DeathCounter = 0;
+		for (int i = 0; i < EnemyCoordinates.size(); i++)
+		{
+			if (EnemyVec[i].ReturnLifeState())
+			{
+				DeathCounter++;
+			}
+		}
+		if (DeathCounter == EnemyCoordinates.size() && LevelNumber < MAX_Level)
+		{
+			LevelNumber++;
+			LM.init(LevelNumber);
 		}
 		
 		BulletObject.CheckWallCollision(WallPoints);

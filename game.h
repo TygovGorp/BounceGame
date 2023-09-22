@@ -19,6 +19,8 @@ namespace Tmpl8 {
 
 		const int SCREEN_WIDTH = 700;
 		const int SCREEN_HEIGHT = 512;
+		int LevelNumber = 1;
+		int MAX_Level = 2;
 		Bullet BulletObject;
 		vector<Enemy> EnemyVec;
 

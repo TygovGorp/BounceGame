@@ -13,8 +13,10 @@ namespace Tmpl8
 	class LevelManager
 	{
 	public:
-		void init()
+		void init(int LevelNum)
 		{
+			EnemyCoordinates.clear();
+			WallPoints.clear();
 
 			/*
 			======
@@ -22,7 +24,7 @@ namespace Tmpl8
 			======
 			*/
 			fstream newfile;
-			newfile.open("Levels/Level_1.txt", ios::in);
+			newfile.open("Levels/Level_" + to_string(LevelNum) + ".txt", ios::in);
 			if (newfile.is_open()) {
 				string tp;
 				while (getline(newfile, tp, ' ')) {
@@ -81,41 +83,6 @@ namespace Tmpl8
 			for (int i = 0; i < loops; i += 2)
 			{
 				ScreenSurface->Box(WallPoints[i].x, WallPoints[i].y, WallPoints[i + 1].x, WallPoints[i + 1].y, 0xffffff);
-			}
-		}
-
-		void CalculatePointsOnLine(const Point& A, const Point& C) {
-
-			Point B(C.x, A.y);
-			Point D(A.x, C.y);
-
-			for (int i = 1; i <= 4; i++)
-			{
-				switch (i)
-				{
-				case 1:
-					for (int i = A.x; i < B.x; i++)
-					{
-						WallCoordinates.push_back(Point(i, A.y));
-						WallCoordinates.push_back(Point(i, D.y));
-					}
-					break;
-				case 2:
-					for (int i = B.y; i < C.y; i++)
-					{
-						WallCoordinates.push_back(Point(B.x, i));
-						WallCoordinates.push_back(Point(A.x, i));
-					}
-					break;
-				}
-				
-			}
-		}
-
-		void WallCollisionInit() {
-			WallCoordinates.clear(); // Clear existing coordinates
-			for (size_t i = 0; i < WallPoints.size(); i += 2) {
-				CalculatePointsOnLine(WallPoints[i], WallPoints[i + 1]);
 			}
 		}
 

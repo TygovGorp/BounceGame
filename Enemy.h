@@ -46,6 +46,10 @@ namespace Tmpl8
 				hit = true;
 			}
 		}
+		bool ReturnLifeState()
+		{
+			return dead;
+		}
 	private:
 		SDL_Rect EnemyRect;
 		AnimationManager IdleAnimationManager;

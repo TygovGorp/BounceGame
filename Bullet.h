@@ -116,54 +116,45 @@ namespace Tmpl8
 				if (collision.AABB(BulletRect.x, BulletRect.y, BulletRect.width / 2, BulletRect.height / 2, Wall.x, Wall.y, Wall.width, Wall.height))
 				{
 					TopLeftHit = true;
-					cout << "top left ";
 				}
 				if (collision.AABB(BulletRect.x + BulletRect.width / 2, BulletRect.y, BulletRect.width / 2, BulletRect.height / 2, Wall.x, Wall.y, Wall.width, Wall.height))
 				{
 					TopRightHit = true;
-					cout << "top right ";
 				}
 				if (collision.AABB(BulletRect.x, BulletRect.y + BulletRect.height / 2, BulletRect.width / 2, BulletRect.height / 2, Wall.x, Wall.y, Wall.width, Wall.height))
 				{
 					BottomLeftHit = true;
-					cout << "bottom left ";
 				}
 				if (collision.AABB(BulletRect.x + BulletRect.width / 2, BulletRect.y + BulletRect.height / 2, BulletRect.width / 2, BulletRect.height / 2, Wall.x, Wall.y, Wall.width, Wall.height))
 				{
 					BottomRightHit = true;
-					cout << "bottom right";
 				}
 
 
 				if (TopRightHit && BottomRightHit)
 				{
-					cout << "front hit" << endl;
 					TwoSpotHit = true;
 					InvertDX();
 				}
 				else if (TopLeftHit && BottomLeftHit)
 				{
-					cout << "back hit" << endl;
 					TwoSpotHit = true;
 					InvertDX();
 				}
 
 				else if (TopLeftHit && TopRightHit)
 				{
-					cout << "top hit" << endl;
 					TwoSpotHit = true;
 					InvertDY();
 				}
 				else if (BottomLeftHit && BottomRightHit)
 				{
-					cout << "bottom hit" << endl;
 					TwoSpotHit = true;
 					InvertDY();
 				}
 
 				if ((TopLeftHit || TopRightHit || BottomLeftHit || BottomRightHit) && !TwoSpotHit)
 				{
-					cout << "corner shot" << endl;
 					InvertDX();
 					InvertDY();
 				}
