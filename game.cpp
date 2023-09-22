@@ -7,7 +7,7 @@ namespace Tmpl8
 	AnimationManager IdleAnim;
 	LevelManager LM;
 	vector<Point> EnemyCoordinates;
-	vector<Point> WallCoordinates;
+	vector<Point> WallPoints;
 	
 
 
@@ -27,7 +27,7 @@ namespace Tmpl8
 		LM.WallCollisionInit();
 
 		EnemyCoordinates = LM.ReturnEnemyCoordinates();
-		WallCoordinates = LM.ReturnWallCoordinates();
+		WallPoints = LM.ReturnWallPoints();
 
 
 		for (int i = 0; i < EnemyCoordinates.size(); i++)
@@ -63,7 +63,7 @@ namespace Tmpl8
 			EnemyVec[i].GotShot(AABBColClass.AABB(BulletObject.GetBulletX(), BulletObject.GetBulletY(), EnemyVec[i].GetEnemyRect()));
 		}
 		
-		BulletObject.CheckWallCollision(WallCoordinates);
+		BulletObject.CheckWallCollision(WallPoints);
 
 	}
 };

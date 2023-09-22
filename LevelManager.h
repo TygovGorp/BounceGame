@@ -119,9 +119,9 @@ namespace Tmpl8
 			}
 		}
 
-		vector<Point> ReturnWallCoordinates()
+		vector<Point> ReturnWallPoints()
 		{
-			return WallCoordinates;
+			return WallPoints;
 		}
 
 	private:
