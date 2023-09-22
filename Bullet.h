@@ -92,7 +92,7 @@ namespace Tmpl8
 			}
 		}
 
-		void CheckWallCollision(std::vector<Point> WallCoordinates)
+		void CheckWallCollision(std::vector<Point>& WallCoordinates)
 		{
 			AABBCollisionClass collision;
 			for (int i = 0; i < WallCoordinates.size(); i += 2)
@@ -102,46 +102,38 @@ namespace Tmpl8
 				bool BottomLeftHit = false;
 				bool BottomRightHit = false;
 				bool TwoSpotHit = false;
-				for (int j = 1; j <= 4; j++)
+
+				Rectangle Wall;
+				Wall.x = WallCoordinates[i].x;
+				Wall.y = WallCoordinates[i].y;
+				Wall.width = WallCoordinates[i + 1].x - WallCoordinates[i].x;
+				Wall.height = WallCoordinates[i + 1].y - WallCoordinates[i].y;
+				// 1: topleft
+				// 2: topright
+				// 3: bottomleft
+				// 4: bottom right
+
+				if (collision.AABB(BulletRect.x, BulletRect.y, BulletRect.width / 2, BulletRect.height / 2, Wall.x, Wall.y, Wall.height, Wall.height))
 				{
-					
-					Rectangle Wall;
-					Wall.x = WallCoordinates[i].x;
-					Wall.y = WallCoordinates[i].y;
-					Wall.width = WallCoordinates[i + 1].x - WallCoordinates[i].x;
-					Wall.height = WallCoordinates[i + 1].y - WallCoordinates[i].y;
-					// 1: topleft
-					// 2: topright
-					// 3: bottomleft
-					// 4: bottom right
-					switch (j)
-					{
-					case 1:
-						if (collision.AABB(BulletRect.x, BulletRect.y, BulletRect.width / 2, BulletRect.height / 2, Wall.x, Wall.y, Wall.height, Wall.height))
-						{
-							TopLeftHit = true;
-						}
-						break;
-					case 2:
-						if (collision.AABB(BulletRect.x + BulletRect.width / 2, BulletRect.y, BulletRect.width / 2, BulletRect.height / 2, Wall.x, Wall.y, Wall.height, Wall.height))
-						{
-							TopRightHit = true;
-						}
-						break;
-					case 3:
-						if (collision.AABB(BulletRect.x, BulletRect.y + BulletRect.height / 2, BulletRect.width / 2, BulletRect.height / 2, Wall.x, Wall.y, Wall.height, Wall.height))
-						{
-							BottomLeftHit = true;
-						}
-						break;
-					case 4:
-						if (collision.AABB(BulletRect.x + BulletRect.width / 2, BulletRect.y + BulletRect.height / 2, BulletRect.width / 2, BulletRect.height / 2, Wall.x, Wall.y, Wall.height, Wall.height))
-						{
-							BottomRightHit = true;
-						}
-						break;
-					}
+					TopLeftHit = true;
+					cout << "top left ";
 				}
+				if (collision.AABB(BulletRect.x + BulletRect.width / 2, BulletRect.y, BulletRect.width / 2, BulletRect.height / 2, Wall.x, Wall.y, Wall.height, Wall.height))
+				{
+					TopRightHit = true;
+					cout << "top right ";
+				}
+				if (collision.AABB(BulletRect.x, BulletRect.y + BulletRect.height / 2, BulletRect.width / 2, BulletRect.height / 2, Wall.x, Wall.y, Wall.height, Wall.height))
+				{
+					BottomLeftHit = true;
+					cout << "bottom left ";
+				}
+				if (collision.AABB(BulletRect.x + BulletRect.width / 2, BulletRect.y + BulletRect.height / 2, BulletRect.width / 2, BulletRect.height / 2, Wall.x, Wall.y, Wall.height, Wall.height))
+				{
+					BottomRightHit = true;
+					cout << "bottom right";
+				}
+
 
 				if (TopRightHit && BottomRightHit)
 				{
@@ -169,8 +161,9 @@ namespace Tmpl8
 					InvertDY();
 				}
 
-				if (!TwoSpotHit)
+				if ((TopLeftHit || TopRightHit || BottomLeftHit || BottomRightHit) && !TwoSpotHit)
 				{
+					cout << "corner shot" << endl;
 					InvertDX();
 					InvertDY();
 				}
