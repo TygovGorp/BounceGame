@@ -30,7 +30,7 @@ namespace Tmpl8
 		WallPoints = LM.ReturnWallPoints();
 
 
-		for (int i = 0; i < EnemyCoordinates.size(); i++)
+		for (int i = 0; i <= EnemyCoordinates.size() - 1; i++)
 		{
 			EnemyVec.push_back(Enemy{});
 			EnemyVec[i].Init(screen, EnemyCoordinates[i]);
@@ -56,11 +56,14 @@ namespace Tmpl8
 		BulletObject.Update(screen);
 
 		AABBCollisionClass AABBColClass;
-		for (int i = 0; i < EnemyCoordinates.size(); i++)
+
+		for (int i = 0; i <= EnemyCoordinates.size() - 1; i++)
 		{
 			EnemyVec[i].Update();
 			EnemyVec[i].GotShot(AABBColClass.AABB(BulletObject.GetBulletX(), BulletObject.GetBulletY(), EnemyVec[i].GetEnemyRect()));
 		}
+
+
 		int DeathCounter = 0;
 		for (int i = 0; i < EnemyCoordinates.size(); i++)
 		{
@@ -73,6 +76,8 @@ namespace Tmpl8
 		{
 			LevelNumber++;
 			LM.init(LevelNumber);
+			BulletObject.Respawn();
+			Init();
 		}
 		
 		BulletObject.CheckWallCollision(WallPoints);

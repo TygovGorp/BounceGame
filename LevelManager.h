@@ -17,37 +17,29 @@ namespace Tmpl8
 		{
 			EnemyCoordinates.clear();
 			WallPoints.clear();
+			NextEnemyLocation = false;
 
-			/*
-			======
-			if there is time left over also make a .json version instead of .txt
-			======
-			*/
 			fstream newfile;
 			newfile.open("Levels/Level_" + to_string(LevelNum) + ".txt", ios::in);
 			if (newfile.is_open()) {
 				string tp;
 				while (getline(newfile, tp, ' ')) {
-					if (EnemyCounter == 2)
-					{
-						EnemyCounter = 0;
-						NextEnemyLocation = false;
-					}
 					if (NextEnemyLocation)
 					{
+						cout<<EnemyCounter<<endl;
 						switch (EnemyCounter)
 						{
 						case 0:
 							EnemyCoordinates.push_back(Point(stoi(tp), 0));
+							EnemyCounter++;
 							break;
 						case 1:
 							EnemyCoordinates.back().y = stoi(tp);
+							EnemyCounter = 0;
 							break;
 						default:
 							break;
 						}
-
-						EnemyCounter++;
 					}
 					else
 					{
@@ -80,7 +72,7 @@ namespace Tmpl8
 
 		void update(Surface* ScreenSurface)
 		{
-			for (int i = 0; i < loops; i += 2)
+			for (int i = 0; i <= WallPoints.size() - 1; i += 2)
 			{
 				ScreenSurface->Box(WallPoints[i].x, WallPoints[i].y, WallPoints[i + 1].x, WallPoints[i + 1].y, 0xffffff);
 			}
@@ -95,7 +87,6 @@ namespace Tmpl8
 		int EnemyCounter = 0;
 		bool NextEnemyLocation = false;
 		vector<Point> WallPoints;
-		vector<Point> WallCoordinates;
 		vector<Point> EnemyCoordinates;
 		int loops = 0;
 		int CubePoint = 0;

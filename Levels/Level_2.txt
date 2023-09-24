@@ -13,5 +13,4 @@
 EnemyLocation
  446 468
 
-EnemyLocation
  446 45
