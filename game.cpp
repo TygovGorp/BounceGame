@@ -17,10 +17,6 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 	void Game::Init()
 	{
-		/*
-		ScoreInit();
-		*/
-
 		//setup IdleAnimation frames for animation in a array
 		IdleAnim.init(8, "assets/Wizard-Frames/idle_frame_", 0, 512 - 104, screen);
 
@@ -34,6 +30,7 @@ namespace Tmpl8
 		{
 			EnemyVec.push_back(Enemy{});
 			EnemyVec[i].Init(screen, EnemyCoordinates[i]);
+			EnemyVec[i].Reset();
 		}
 
 	}

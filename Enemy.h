@@ -48,7 +48,20 @@ namespace Tmpl8
 		}
 		bool ReturnLifeState()
 		{
+			return hit;
+		}
+		bool ReturnHitState()
+		{
 			return dead;
+		}
+		
+		void Reset()
+		{
+			counter = 0;
+			deadCounter = 0;
+			hit = false;
+			// 1 = dead, 0 = alive
+			dead = 0;
 		}
 	private:
 		SDL_Rect EnemyRect;

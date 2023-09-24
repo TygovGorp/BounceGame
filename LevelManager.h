@@ -26,7 +26,6 @@ namespace Tmpl8
 				while (getline(newfile, tp, ' ')) {
 					if (NextEnemyLocation)
 					{
-						cout<<EnemyCounter<<endl;
 						switch (EnemyCounter)
 						{
 						case 0:
