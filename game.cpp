@@ -9,6 +9,7 @@ namespace Tmpl8
 	LevelManager LM;
 	vector<Point> EnemyCoordinates;
 	vector<Point> WallPoints;
+	Sprite GameWinScreen;
 	
 
 
@@ -17,8 +18,13 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 	void Game::Init()
 	{
+		EnemyVec.clear();
+		EnemyCoordinates.clear();
+		WallPoints.clear();
+
 		//setup IdleAnimation frames for animation in a array
 		IdleAnim.init(8, "assets/Wizard-Frames/idle_frame_", 0, 512 - 104, screen);
+		GameWinScreen.Build(new Surface("assets/GAME_WIN.png"), 1);
 
 		LM.init(LevelNumber);
 
@@ -30,7 +36,6 @@ namespace Tmpl8
 		{
 			EnemyVec.push_back(Enemy{});
 			EnemyVec[i].Init(screen, EnemyCoordinates[i]);
-			EnemyVec[i].Reset();
 		}
 
 	}
@@ -75,6 +80,10 @@ namespace Tmpl8
 			LM.init(LevelNumber);
 			BulletObject.Respawn();
 			Init();
+		}
+		if (DeathCounter == EnemyCoordinates.size() && LevelNumber == MAX_Level)
+		{
+			GameWinScreen.Draw(screen, 0, 0);
 		}
 		
 		BulletObject.CheckWallCollision(WallPoints);

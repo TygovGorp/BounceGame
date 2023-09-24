@@ -1,7 +1,7 @@
 #pragma once
 #include "surface.h"
 #include <string>
-#include <iostream>
+#include <vector>
 #include <math.h>
 
 namespace Tmpl8
@@ -13,30 +13,30 @@ namespace Tmpl8
 		int frameLength = 12;
 		int Xlocation, Ylocation;
 		Surface* Screen;
-		Sprite* Frames;
+		vector <Sprite*> Frames;
 	public:
 		~AnimationManager()
 		{
-			delete[] Frames;
+			Frames.clear();
 		}
 
 		void init(int NumFrames, char* filename, int Xloc, int Yloc, Surface* ScreenSurface)
 		{
-			Frames = new Sprite[NumFrames];
+			Frames.clear();
 			Xlocation = Xloc;
 			Ylocation = Yloc;
 			Screen = ScreenSurface;
 			NumOfFrames = NumFrames;
 			for (int i = 0; i < NumOfFrames; i++)
 			{
-				Frames[i].Build(new Surface(StrToCharStar(filename, i)), 1);
+				Frames.push_back(new Sprite(new Surface(StrToCharStar(filename, i)), 1));
 			}
 		}
 
 		void update(int FrameCounter)
 		{
 			int currentFrame = FrameCounter / frameLength % NumOfFrames;
-			Frames[currentFrame].DrawScaled(Xlocation, Ylocation, 104, 104, Screen);
+			Frames[currentFrame]->DrawScaled(Xlocation, Ylocation, 104, 104, Screen);
 		}
 
 		char* StrToCharStar(char* filename, int i)
