@@ -1,28 +1,80 @@
 #pragma once
+#include <SDL.h>
+#include <vector>
+#include "Bullet.h"
+#include "AnimationManager.h"
+#include "Enemy.h"
+#include "LevelManager.h"
+#include "Point.h"
+#include "AABBCollisionClass.h"
+
+//using namespace std;
 
 namespace Tmpl8 {
 
-class Surface;
-class Game
-{
-public:
-	void SetTarget( Surface* surface ) { screen = surface; }
-	void Init();
-	void Shutdown();
-	void Tick(float deltaTime)
+	class Surface;
+	class Game
 	{
-		Update();
-		Render();
-	}
-	void Update();
-	void Render();
-	void MouseUp( int button ) { /* implement if you want to detect mouse button presses */ }
-	void MouseDown( int button ) { /* implement if you want to detect mouse button presses */ }
-	void MouseMove( int x, int y ) { /* implement if you want to detect mouse movement */ }
-	void KeyUp( int key ) { /* implement if you want to handle keys */ }
-	void KeyDown( int key ) { /* implement if you want to handle keys */ }
-private:
-	Surface* screen;
-};
+	public:
 
+		const int SCREEN_WIDTH = 700;
+		const int SCREEN_HEIGHT = 512;
+		int LevelNumber = 1;
+		int MAX_Level = 2;
+		Bullet BulletObject;
+		vector<Enemy> EnemyVec;
+
+		Game()
+		{
+			BulletObject;
+		}
+
+		void SetTarget(Surface* surface) { screen = surface; }
+		void Init();
+		void Shutdown();
+		void Tick(float deltaTime);
+		void MouseUp(int button) { /* implement if you want to detect mouse button presses */ }
+		void MouseMove(float x, float y)
+		{
+			MouseX = x;
+			MouseY = y;
+		}
+		void MouseDown(int button)
+		{
+			BulletObject.Schoot(MouseX, MouseY);
+		}
+
+		void KeyUp(int key) { /* implement if you want to handle keys */ }
+		void KeyDown(int key)
+		{
+			/*	debug code for figuring out what the number was for each key
+			std::string str = std::to_string(key);
+			const char* test = str.c_str();
+			printf(test);
+			*/
+			// (main)menu navigation inputs
+			switch (key)
+			{
+			case 43: //tab
+				BulletObject.Respawn();
+				break;
+			case 82: //arrow up
+				break;
+			case 80: //arrow left
+				break;
+			case 81: //arrow down
+				break;
+			case 79: //arrow right
+				break;
+			default:
+				break;
+			}
+		}
+
+		static SDL_Renderer* renderer;
+		int MouseX;
+		int MouseY;
+	private:
+		Surface* screen;
+	};
 }; // namespace Tmpl8

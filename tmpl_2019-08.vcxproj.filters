@@ -17,6 +17,12 @@
     <ClInclude Include="template.h">
       <Filter>template code</Filter>
     </ClInclude>
+    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="AnimationManager.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="LevelManager.h" />
+    <ClInclude Include="Point.h" />
+    <ClInclude Include="AABBCollisionClass.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">
